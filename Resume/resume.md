@@ -40,4 +40,87 @@
    $$
 
 
+
 7. 实现一个狗品种识别算法App：
+
+
+
+> [常用机器学习算法总结](https://blog.csdn.net/u012050154/article/details/55106731)
+>
+> [8 种常见机器学习算法比较](https://juejin.im/entry/58f482470ce463006bbaff8d)
+>
+> [深度学习常见算法的介绍和比较](https://blog.csdn.net/abc200941410128/article/details/79269386)
+>
+> [[总结型***\]](http://www.aboutyun.com/forum.php?mod=forumdisplay&fid=199&filter=typeid&typeid=1020) [常用机器学习和深度学习算法总结***](http://www.aboutyun.com/thread-24907-1-1.html)
+>
+> [机器学习算法地图](https://bbs.pku.edu.cn/v2/post-read.php?bid=322&threadid=16495870&from_mobile_long=1)
+>
+> [机器学习算法地图-微信](https://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&mid=2247485306&idx=1&sn=fc8cc8de313bdb61dcd39c1dedb240a4&chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0#rd)
+>
+> [用一句话总结常用的机器学习算法](https://zhuanlan.zhihu.com/p/38067616)
+>
+> [机器学习常用算法总结](https://blog.csdn.net/JIEJINQUANIL/article/details/52270178)
+>
+> [推荐系统主要算法总结及Youtube深度学习推荐算法实例概括](https://www.jiqizhixin.com/articles/2017-07-09-5)
+>
+> [推荐算法--总结](https://blog.csdn.net/yimingsilence/article/details/54959008)
+>
+> [推荐系统算法总结](https://blog.csdn.net/nanjingdreamfly/article/details/68926806)
+>
+> [推荐系统常用的推荐算法](https://zhuanlan.zhihu.com/p/23036112)
+
+决策树
+
+随机森林
+
+逻辑斯蒂回归
+
+SVM
+
+朴素贝叶斯
+
+K最近邻
+
+K均值
+
+Adaboost
+
+神经网络
+
+马尔科夫
+
+GDBT
+
+EM
+
+Boosting
+
+Bagging
+
+PCA
+
+LDA
+
+---
+
+DBN（Deep belief network） 深度信念网络
+
+CNN（Convolution Neural Networks）卷积神经网络
+
+RNN（Recurrent neural network） 递归神经网络
+
+
+
+
+
+
+
+
+
+
+
+
+
+数据清洗：
+
+算法：LR、FTRL、SVM、GBDT、XGBoost、
