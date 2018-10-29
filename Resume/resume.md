@@ -41,7 +41,30 @@
 
 
 
+
 7. 实现一个狗品种识别算法App：
+
+
+
+[Kaggle实战](https://www.bilibili.com/video/av26286657?from=search&seid=3969064430081332942)
+
+kaggle （凯歌哦）
+
+Kaggle实战视频相关代码与课件：链接：https://pan.baidu.com/s/1dRGcmjMsVYyC-MnXFsJqPA 密码：49xy
+
+
+
+项目描述：
+
+- 猫狗大战（猫狗分类）
+
+  kaggle 上的一个竞赛。目标是使用深度学习方法识别图片是猫还是狗。数据来自kaggle，数据分为训练集和测试集，训练集包含了25000张猫狗的图片，测试集包含了12500张猫狗的图片。
+
+  数据预处理：通过对图片中的色彩-像素进行IQR分析，发现有些无关的图片和地分别率的图片，使用IQR分析异常图片的效果不是太好，经过尝试后最后选择 InceptionV3 模型排查训练集中的异常图片。处理完异常图片后将训练集中猫狗图片分别放在不同的文件夹区分，为 Keras 的 ImageDataGenerator 使用。
+
+  模型搭建：使用 keras 框架对 ResNet50、Xception、Inception V3三个模型进行训练生成迁移学习特征向量并保存。
+
+
 
 
 
