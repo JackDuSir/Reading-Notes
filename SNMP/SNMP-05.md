@@ -51,6 +51,132 @@
 > > [SNMP+MIB完整手册](https://wenku.baidu.com/view/3cbbbdcb0508763231121214.html?from=search)
 > >
 > > [基于NETSNMP开发mib说明](https://wenku.baidu.com/view/c3ebe8c008a1284ac8504346.html?from=search)
+>
+> ### OID
+>
+> > [snmp oid](https://wenku.baidu.com/view/bb9f5c46524de518964b7dec.html?rec_flag=default&sxts=1541478085373)
+> >
+> > [snmp服务配置及其oid、mib文件解析](https://blog.csdn.net/wh8_2011/article/details/64921699)
+> >
+> > [SNMP、MIB、OID概念的理解](https://my.oschina.net/yjwxh/blog/476454)
+> >
+> > [常用的SNMP监控OID列表,包括Trap的解释](https://wenku.baidu.com/view/b4ff48a2284ac850ad02423e.html?sxts=1541478057343)
+> >
+> > [SNMP协议分析](https://wenku.baidu.com/view/82652b75a417866fb84a8e4d.html?sxts=1541478066084)
+> >
+> > [SNMP协议基础](https://wenku.baidu.com/view/30450700b52acfc789ebc986.html?sxts=1541478067662)
+> >
+> > [SNMP MIB完整手册](http://network.51cto.com/art/201007/209214_all.htm)
+> >
+> > [StorageTek 模块化磁带库 SNMP 参考指南](https://docs.oracle.com/cd/E68530_01/SLESR/snmp_mib.htm#A1066148)
+> >
+> > [SNMP（MIB（OID）& SMI & SNMP）介绍，](http://www.voidcn.com/article/p-hheeiaeg-rn.html)
+> >
+> > [三分钟看懂Snmp协议分析](https://blog.csdn.net/CauseAndAffect/article/details/46897163)
+> >
+> > [网络协议篇之SNMP协议（一）——SNMP报文协议](https://blog.csdn.net/zqixiao_09/article/details/77126897)
+> >
+> > [网络协议：SNMP协议深入分析和学习笔记](http://velep.com/archives/422.html)
+
+## 1. SNMP 协议分析
+
+关键点：BER 编码
+
+### 1.1 协议字段
+
+<img src="_asset/SNMP协议.png">
+
+### 1.2 PDU 类型对应编号
+
+| **PDU类型** | **名称**             |
+| ----------- | -------------------- |
+| **0**       | **get-request**      |
+| **1**       | **get-next-request** |
+| **2**       | **get-response**     |
+| **3**       | **set-request**      |
+| **4**       | **trap**             |
+
+### 1.3 BER 编码
+
+BER 的数据都由三个域构成：
+
+- 标识域(tag) + 长度域(length) + 值域(value)。
+
+### 1.4 常见问题解答
+
+#### 1.4.1 常见的类型(标识域)有哪些及其对应的值？
+
+BOOL(0x01); INT(0x02); OCTSTR(0x04); NULL(0x05); OBJID(0x06); ENUM(0x0A); EQ(0x30); SETOF(0x31); IPADDR (0x40); COUNTER (0x41); GAUGE(0x42); TIMETICKS(0x43); OPAQUE(0x44); GET(0xA0); GETNEXT(0xA1); GETResp(0xA2); SET(0xA3); TRAP(0xA4);
+
+#### 1.4.2 如何转化长度域十六进制数据？
+
+长度域指明值域的长度,不定长,一般为一到三个字节。其格式可分为短格式和长格式.长度域采用短 / 长指示器(Short / Long Form)来标明长度指示符是否是单个字节,指示器在 bit8 上。如果短 / 长指示器是 0,则为短限定格式,低 7 位包含的就是数据的长度值,长度值在 0 到 127 之间;如果短 / 长指示器是 1,则为长限定格式,其低 7 位的值表示后面紧跟的长度指示值的字节数,而后续字节拼接起来的值就是数据字段的长度,即数据长度。
+
+    # 举例：
+     length：30 => 1E　
+     length：169 => 81 A9　（a9 == 169, 81 中的 1 表示一个字节， 8 作为标识）
+     length：1500 => 82 05 DC ( 05dc == 1500， 82 中的 2 表示两个字节， 8 作为标识）
+### 1.5 SMI OID MIB
+
+> [SNMP协议基础](https://wenku.baidu.com/view/30450700b52acfc789ebc986.html?sxts=1541478067662)
+>
+> [SNMP Agent添加私有MIB](https://blog.csdn.net/zzj000/article/details/79637095)
+>
+> [net-snmp扩展table类型的私有mib](https://blog.csdn.net/qq_27204267/article/details/51880885)
+
+
+
+
+
+
+
+
+
+### 1.6 差错状态
+
+| 差错状态 | 名字 | 说明 |
+| :--------: | :----: | :----: |
+| 0 | noError | 一切正常 |
+| 1 | tooBig | 代理无法将回答装入到一个SNMP报文之中 |
+| 2 | noSuchName | 操作指明了一个不存在的变量 |
+| 3 | badValue | 一个set操作指明了一个无效值或无效语法 |
+| 4 | readOnly | 管理进程试图修改一个只读变量 |
+| 5 | genErr | 某些其他的差错 |
+
+**差错索引(error index)**
+
+- 当出现noSuchName、badValue 或 readOnly 的差错时，由代理进程在回答时设置的一个整数，它指明有差错的变量在变量列表中的偏移。
+
+### 1.7 trap 类型
+
+**企业（enterprise）**
+
+- 填入 trap 报文的网络设备的对象标识符。此对象标识符肯定是在图 3 的对象命名树上的 enterprise 结点{1.3.6.1.4.1}下面的一棵子树上。
+
+**trap类型**
+
+- 此字段正式的名称是 generic-trap，共分为7种
+
+| trap 类型 | 名字 | 说明 |
+| :---------: | :----: | :----: |
+| 0 | coldStart | 代理进行了初始化 |
+| 1 | warmStart | 代理进行了重新初始化 |
+| 2 | linkDown | 一个接口从工作状态变为故障状态 |
+| 3 | linkUp | 一个接口从故障状态变为工作状态 |
+| 4 | authenticationFailure | 从SNMP管理进程接收到具有一个无效共同体的报文 |
+| 5 | egpNeighborLoss | 一个EGP相邻路由器变为故障状态 |
+| 6 | enterpriseSpecific | 代理自定义的事件，需要用后面的“特定代码”来指明 |
+
+当使用上述类型 2、3、5 时，在报文后面变量部分的第一个变量应标识响应的接口。
+
+**特定代码(specific-code)**
+
+- 指明代理自定义的时间（若 trap 类型为 6），否则为 0。
+
+**时间戳(timestamp)**
+
+- 指明自代理进程初始化到 trap 报告的事件发生所经历的时间，单位为 10ms。例如时间戳为 1908 表明在代理初始化后 1908ms 发生了该时间。
+
 
 ## 1. net-snmp 程序逻辑
 
@@ -259,12 +385,12 @@ OK, snmp 自动发现了这个 MIB 库， 有了自定义的 OID，接下来开�
 
 ```shell
 $ ./snmpget -c public -v 2c localhost 1.3.6.1.4.1.77695.1.0
-SNMPv2-SMI::enterprises.77695.1= No Such Object available on this agent at this OID  
+SNMPv2-SMI::enterprises.77695.1= No Such Object available on this agent at this OID 
 ```
 
 结果是 No Such Object available on this agent at this OID，我们需要用 mib2c 程序生成所需要的 `.c` 和 `.h` 文件。
 
-执行 `envMIBS="+/usr/local/net-snmp/share/snmp/mibs/TEST-GET-MIB.txt" ./mib2ctestGet`，会引导你逐渐生成 `testGet.h` 和 `testGet.c` ,先选 2 再选 1，过程如下：
+执行 `envMIBS="+/usr/local/net-snmp/share/snmp/mibs/TEST-GET-MIB.txt" ./mib2c testGet`，会引导你逐渐生成 `testGet.h` 和 `testGet.c` ,先选 2 再选 1，过程如下：
 
 ```shell
 $ env MIBS="+/usr/local/net-snmp/share/snmp/mibs/TEST-GET-MIB.txt" ./mib2c testGet
@@ -524,3 +650,4 @@ SNMPv2-SMI::enterprises.77695.1.0= STRING: "Fri Nov  3 14:02:13 2017"
 
 
 
+snmpget -v 2c -c public 192.168.103.237:161 1.3.6.1.2.1.25.1.1.0
