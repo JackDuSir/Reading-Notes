@@ -118,17 +118,155 @@ BOOL(0x01); INT(0x02); OCTSTR(0x04); NULL(0x05); OBJID(0x06); ENUM(0x0A); EQ(0x3
      length：1500 => 82 05 DC ( 05dc == 1500， 82 中的 2 表示两个字节， 8 作为标识）
 ### 1.5 SMI OID MIB
 
+> [SNMP、MIB、OID概念的理解](https://my.oschina.net/yjwxh/blog/476454)
+>
 > [SNMP协议基础](https://wenku.baidu.com/view/30450700b52acfc789ebc986.html?sxts=1541478067662)
 >
 > [SNMP Agent添加私有MIB](https://blog.csdn.net/zzj000/article/details/79637095)
 >
 > [net-snmp扩展table类型的私有mib](https://blog.csdn.net/qq_27204267/article/details/51880885)
+>
+> [snmp mib 数据类型](https://blog.csdn.net/twinkle_star1314/article/details/51200829)
+>
+> [华为 mib 简介](http://support.huawei.com/enterprise/docinforeader!loadDocument1.action?contentId=DOC1000157079&partNo=10032)
+>
+> [SNMP ASN.1 OID编码规则](https://blog.csdn.net/xiao628945/article/details/8006092)
+>
+> [OID的编码规则](https://blog.csdn.net/starboybenben/article/details/47109039)
+>
+> [BER编码规则](http://xiaoxiaoher.iteye.com/blog/2359520)
+>
+> [网络协议：SNMP协议之ASN.1语法详细描述](http://velep.com/archives/430.html)
+>
+> [SNMP介绍，OID及MIB库](http://yeluotiying.iteye.com/blog/2107294)
+>
+> [SNMP Agent添加私有MIB](https://blog.csdn.net/zzj000/article/details/79637095)
+>
+> [Zabbix SNMP添加自定义OID(学习笔记二十四)](https://www.jianshu.com/p/a72534e64685)
+
+```lua
+QOS-MIB DEFINITIONS ::= BEGIN 
+
+IMPORTS 
+    OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+        FROM SNMPv2-CONF
+    enterprises, Integer32, Unsigned32, OBJECT-TYPE, MODULE-IDENTITY,NOTIFICATION-TYPE
+        FROM SNMPv2-SMI
+    DisplayString
+        FROM SNMPv2-TC;
+
+-- enterprises就是.1.3.6.1.4.1
+-- ::={}格式里定义的就是当前节点的访问地址
+-- .1.3.6.1.4.1.73691
+QosMIB MODULE-IDENTITY
+    LAST-UPDATED "201803021450Z"
+    ORGANIZATION
+        ""
+    CONTACT-INFO
+        "sedwt-zjzhu"
+    DESCRIPTION
+        "XXX's QOS List MIB."
+    ::= { enterprises 73691 }
+
+-- 定义一个自己的根节点，访问地址为 QosMIB.1,也就是
+-- .1.3.6.1.4.1.73691.1
+-- 这个根节点下面又定义了3个子节点
+-- SYNTAX是该节点数据类型，可以自己定义，也可以用标准里定义好的
+-- MAX-Access是该节点的读写属性，有not-accessible,read-only,read-write,read-create，根据自己需求选择合适的属性，read-create比较特殊，会在下一篇博客中单独讲。
+Qos OBJECT IDENTIFIER ::= { QosMIB 1 }
+    WANDevice OBJECT-TYPE
+        SYNTAX Integer32 
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION
+            "参数解释：广域网侧设备。取值范围：4 - 4 ,默认值：4"
+        ::= { Qos 1 }
+
+    WANConnectionDevice OBJECT-TYPE
+        SYNTAX Integer32
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION
+            "参数解释：广域网侧连接设备。,取值范围：1 - 1,默认值：1"
+        ::= { Qos 2 }
+
+    CID OBJECT-TYPE
+        SYNTAX Integer32
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION
+            "参数解释：CID。取值范围：2 - 20,默认值：2"
+        ::= { Qos 3 }
+END 
+```
 
 
 
+### 1.5.1 SNMP数据类型
 
+数据类型共分为三大类：
 
+- 通用类型(Universal)
 
+- 通用结构类型(Universal-constructed)
+
+- 应用类型(application)
+
+1. 通用数据类型
+
+   通用数据类型通常被称为非聚合类型，在SNMP协议中有4种通用数据类型：
+
+   - INTEGER: 整型，是-2,147,483,648~2,147,483,647的有符号整数；
+   - OCTET STRING: 字符串；
+   - OBJECT IDENTIFIER: 对象标识符；
+   - NULL: 空值。
+
+2. 通用结构类型
+
+   结构类型指列表和表格，常被称作聚合类型。在SNMP协议中主要使用两种结构类型：
+
+   - SEQUENCE 用于列表。这一数据类型与大多数程序设计语言中的“structure”类似。一个SEQUENCE包括0个或更多元素，每一个元素又是另一个ASN.1数据类型。
+   - SEQUENCE OF type 用于表格。这一数据类型与大多数程序设计语言中的“array”类似。一个表格包括0个或更多元素，每一个元素又是另一个ASN.1数据类型。
+
+3. 应用数据类型
+
+   应用数据类型采用隐式定义，是引用SNMP的简单数据类型来定义的。主要有6种：
+
+   - IpAddress: 以网络序表示的IP地址。因为它是一个32位的值，所以定义为4个字节；
+   - network address：网络地址，表示从一个特定协议族中选定的网络地址， SNMPv1仅支持32位IP地址；所以与IpAddress等效；
+   - counter：计数器是一个非负的整数，它递增至最大值，而后归零。SNMPv1中定义的计数器是32位的，即最大值为4，294，967，295；
+   - Gauge ：也是一个非负整数，它可以递增或递减，但达到最大值时保持在最大值，最大值为2^32-1；
+   - time ticks：是一个时间单位，表示以0.01秒为单位计算的时间；
+
+opaque：表示用于传递任意信息串的任意编码格式，它与SMI使用的严格数据输入格式不同。
+
+### 15.2 MIB 库 ASN.1编码 SMI
+
+**ASN.1**:
+
+- 高级数据描述语言，描述数据类型、结构、组织及编码方法。包含语法符号和编码规则两大部分。SNMP使用ASN.1描述协议数据单元(PDU)和管理对象 信息库（MIB）;
+
+**BER**:
+
+- 是 ASN.1中的基本编码规则。描述具体的ASN.1对象如何编码成比特流在网络上进行传输。SNMP使用BER作为编码方案，数据首先经过BER编码，再 经由传输层协议（一般是UDP）发送往接收方。接收方在SNMP端口收到PDU后，经过BER解码后，得到具体的SNMP操作数据。
+
+**SMI**:
+
+- 是SNMP的描述方法。ASN.1功能很强大，但SNMP只用到其中一小部分，为了方便使用，对这部分内容做了描述，限定了范围，这就是SMI。SMI由 ASN.1的一个子集合和一部分自定义的类型、宏等组成。SMI是ASN.1的一个子集和超集。
+
+**MIB**：
+
+- 使用SMI中定义的类型和ASN.1中的基本类型进行对象描述，是一个使用SMI描述的管理信息库。每一类关心的事件都有一组MIB，比如网络接口有一棵 MIB树，TCP有一棵MIB树，UDP也有一棵状态树。定义了数据格式、类型、顺序、意义等；
+
+**PDU**:
+
+- 是网络中传送的数据包，SNMP的协议数据单元。每一种SNMP操作物理上都对应一个PDU。PDU是基本的通信格式，使用ASN.1描述，使用BER编 码，通过传书层协议传送； 
+
+SNMP 是应用层协议，它要求两端的协议实体交换各种报文，而低层要求用户数据都是 BYTE 序列，这就产生了一个问题： SNMP 协议实体如何从接受到的一个 BYTE 序列中识别出报文又如何把一个用内部数据结构表示的报文转换成一个可供发送的 BYTE 序列， 也就是编解码问题。
+
+解决这个问题，就需要一个定义从实际的软件数据结构中抽象出来的数据类型的表示方法，称为抽象句法。 
+
+ASN.1 就是用来描述抽象记法的语言，事实上可应用与任何协议层，在它的基础上，通过规定编码规则，就可以确定数据在传送中的八比特组的值。
 
 
 
@@ -390,7 +528,7 @@ SNMPv2-SMI::enterprises.77695.1= No Such Object available on this agent at this 
 
 结果是 No Such Object available on this agent at this OID，我们需要用 mib2c 程序生成所需要的 `.c` 和 `.h` 文件。
 
-执行 `envMIBS="+/usr/local/net-snmp/share/snmp/mibs/TEST-GET-MIB.txt" ./mib2c testGet`，会引导你逐渐生成 `testGet.h` 和 `testGet.c` ,先选 2 再选 1，过程如下：
+执行 `env MIBS="+/usr/local/net-snmp/share/snmp/mibs/TEST-GET-MIB.txt" ./mib2c testGet`，会引导你逐渐生成 `testGet.h` 和 `testGet.c` ,先选 2 再选 1，过程如下：
 
 ```shell
 $ env MIBS="+/usr/local/net-snmp/share/snmp/mibs/TEST-GET-MIB.txt" ./mib2c testGet
@@ -445,18 +583,16 @@ mib2c 已经统计出我们的 mib 库包含 1 个 scalar 变量，0 个 table �
 ```c++
 /*
  * Note: this file originally auto-generated by mib2c using
- *        $
+ *        : mib2c.scalar.conf 11805 2005-01-07 09:37:18Z dts12 $
  */
 #ifndef TESTGET_H
 #define TESTGET_H
- 
-/*
- * function declarations
- */
-void            init_testGet(void);
+
+/* function declarations */
+void init_testGet(void);
 Netsnmp_Node_Handler handle_GetTime;
- 
-#endif                          /* TESTGET_H */
+
+#endif /* TESTGET_H */
 ```
 
 生成的 `testGet.c` 文件如下：
@@ -464,65 +600,53 @@ Netsnmp_Node_Handler handle_GetTime;
 ```c++
 /*
  * Note: this file originally auto-generated by mib2c using
- *        $
+ *        : mib2c.scalar.conf 11805 2005-01-07 09:37:18Z dts12 $
  */
- 
+
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
 #include "testGet.h"
- 
+
 /** Initializes the testGet module */
 void
 init_testGet(void)
 {
-    const oid GetTime_oid[] = { 1, 3, 6, 1, 4, 1, 77695, 1 };
- 
-    DEBUGMSGTL(("testGet", "Initializing\n"));
- 
-    netsnmp_register_scalar(netsnmp_create_handler_registration
-                            ("GetTime", handle_GetTime, GetTime_oid,
-                             OID_LENGTH(GetTime_oid), HANDLER_CAN_RONLY));
+    static oid GetTime_oid[] = { 1,3,6,1,4,1,77695,1 };
+
+  DEBUGMSGTL(("testGet", "Initializing\n"));
+
+    netsnmp_register_scalar(
+        netsnmp_create_handler_registration("GetTime", handle_GetTime,
+                               GetTime_oid, OID_LENGTH(GetTime_oid),
+                               HANDLER_CAN_RONLY
+        ));
 }
- 
+
 int
 handle_GetTime(netsnmp_mib_handler *handler,
-               netsnmp_handler_registration *reginfo,
-               netsnmp_agent_request_info *reqinfo,
-               netsnmp_request_info *requests)
+                          netsnmp_handler_registration *reginfo,
+                          netsnmp_agent_request_info   *reqinfo,
+                          netsnmp_request_info         *requests)
 {
-    /*
-     * We are never called for a GETNEXT if it's registered as a
-     * "instance", as it's "magically" handled for us.
-     */
- 
-    /*
-     * a instance handler also only hands us one request at a time, so
-     * we don't need to loop over a list of requests; we'll only get one.
-     */
-    time_t t;
-    switch (reqinfo->mode) {
-		case MODE_GET:
-            time(&t);
-            char szTime[100];
-            snprintf(szTime,100,"%s",ctime(&t));
-            snmp_set_var_typed_value(requests->requestvb, ASN_OCTET_STR,
-                                 /*
-                                  * XXX: a pointer to the scalar's data
-                                  */ ,
-                                 /*
-                                  * XXX: the length of the data in bytes
-                                  */ ;
+    /* We are never called for a GETNEXT if it's registered as a
+       "instance", as it's "magically" handled for us.  */
 
+    /* a instance handler also only hands us one request at a time, so
+       we don't need to loop over a list of requests; we'll only get one. */
+    
+    switch(reqinfo->mode) {
+        case MODE_GET:
+            snmp_set_var_typed_value(requests->requestvb, ASN_OCTET_STR,
+                             (u_char *) /* XXX: a pointer to the scalar's data */,
+                             /* XXX: the length of the data in bytes */);
             break;
         default:
-            /*
-             * we should never get here, so this is a really bad error
-             */
-            snmp_log(LOG_ERR, "unknown mode (%d) in handle_GetTime\n",
-                     reqinfo->mode);
+            /* we should never get here, so this is a really bad error */
+            snmp_log(LOG_ERR, "unknown mode (%d) in handle_GetTime\n", reqinfo->mode );
             return SNMP_ERR_GENERR;
     }
+
     return SNMP_ERR_NOERROR;
 }
 ```
@@ -651,3 +775,4 @@ SNMPv2-SMI::enterprises.77695.1.0= STRING: "Fri Nov  3 14:02:13 2017"
 
 
 snmpget -v 2c -c public 192.168.103.237:161 1.3.6.1.2.1.25.1.1.0
+
