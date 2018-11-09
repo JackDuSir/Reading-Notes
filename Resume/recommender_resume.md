@@ -1,6 +1,6 @@
 ## 项目描述 -- 电影推荐系统
 
-**项目概括**：使用MovieLens 20M数据集，实现User CF、Item CF、MF推荐。
+**项目概括**：使用MovieLens 20M数据集，实现User CF、Item CF、KNN BallTree搜索、MF推荐。
 
 **数据预处理**：使用pandas对数据做处理，构建电影相关矩阵，构建IDF矩阵，
 
@@ -22,7 +22,13 @@
 
 
 
+
+
+
+
 > [推荐系统算法学习（一）——协同过滤(CF) MF FM FFM](https://blog.csdn.net/qq_23269761/article/details/81355383)
+>
+> [融合 MF 和 RNN 的电影推荐系统](https://zhuanlan.zhihu.com/p/32425103)
 
 
 
