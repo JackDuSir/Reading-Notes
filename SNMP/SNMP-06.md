@@ -359,7 +359,112 @@ v2 中的
 
 - 符合惯例，以标准 MIB 为参考
 
+## 9. SNMP 协议的MIB文件常见宏定义的描述
 
+对 MIB 文件中一些常见的宏定义的描述
+
+1、DEFINITIONS ::= BEGIN
+
+SNMP 始终使用 ASN.1 概念中的描述块（module）来组织 ASN.1 对象的，ASN.1 的描述块是一些相关描述语句的集合, module 的结构如下
+
+<<module>> DEFINITIONS ::= BEGIN
+
+<<linkage>>
+
+<<declarations>>
+
+END
+
+2、<<basetype>> ::= TEXTUAL-CONVENTION
+
+定义了对标准数据类型的进行扩展的语法
+
+很多MIB定义中都会先定义一些基于标准类型的扩展类型，如：	
+
+```lua
+CiFlowDirection ::= TEXTUAL-CONVENTION
+    STATUS  current
+    DESCRIPTION
+    	"The direction of data flow thru a circuit.
+		transmit(1) - Only transmitted data
+		receive(2)  - Only received data
+		both(3)    - Both transmitted and received data."
+    SYNTAX  INTEGER {
+        transmit(1),
+        receive(2),
+        both(3)
+    }
+```
+
+CiFlowDirection 是基于 INTEGER 的枚举类型
+
+3、<<mibname>> MODULE-IDENTITY
+
+该定义添加了一个公共的标示段来对整个信息描述块进行顶层的文字描述，以加强对管理 MIB 描述块的文档管理和控制，每个 MIB 定义中都会有该定义。如：
+
+```lua
+circuitIfMIB MODULE-IDENTITY
+    LAST-UPDATED "201803021450Z"
+    ORGANIZATION
+        ""
+    CONTACT-INFO
+        "sedwt-zjzhu"
+    DESCRIPTION
+        "XXX's QOS List MIB."
+    ::= { enterprises 73691 }
+```
+
+4、OBJECT IDENTIFIFIER
+
+声明一个节点，如：
+
+```lua
+atmClpTaggingNoScr  OBJECT IDENTIFIFIER ::= { circuitIfMIB 1 }
+```
+
+5、OBJECT-TYPE
+
+如：
+
+```lua
+ciCircuitTable  OBJECT-TYPE
+    SYNTAX      SEQUENCE OF CiCircuitEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+    	"The Circuit Interface Circuit Table."
+    ::= { ciObjects 1 }
+```
+
+包括了 SNMP 定义该管理对象的全部信息，相当于一个模板。
+
+表，实体，叶子都是该类型。
+
+SNMPv2 中对 SNMP 的兼容性做了规定，主要是通过引入三个宏： OBJECT-GROUP, MODULE-COMPLIANCE, AGENT-CAPABILITIES.
+
+6、OBJECT-GROUP
+
+定义相关管理对象集合以及他们彼此关联的一致性程度。OBJECT-GROUP 声明的 MIB 对象是实现该组所必须包括的 MIB 对象的最小集合。也就是说，要实现这个组，必须包括这些对象。
+
+7、MODULE-COMPLIANCE
+
+通过定义模块内所包含的组来保证模块的兼容性。
+
+规定了要实现该模块必须包含的组的最小集合。
+
+其中 MANDATORY-GROUPS 规定了此模块必须实现的组的名称。GROUP 子句说明条件必须活条件可选的组。
+
+8、AGENT-CAPABILITIES
+
+管理代理实现了模块中的哪些组以及这些组中的 MIB 对象在实现时和原定义的差别在管理信息结构中由此宏定义表示。此宏定义在实际应用中很少见。
+
+9、OBJECT-IDENTITY
+
+对象标示宏，此宏定义用于说明对象标示符（OBJECT-IDENTIFIER），给对象标示符的说明加上附加信息，包括状态，文字说明等，可用于对一个表中几个参数的不同组合的意义的说明。
+
+10、NOTIFICATION-TYPE
+
+说明了 SNMPv2 的 trap 格式。定义了通知类型报文中传输的数据。
 
 
 

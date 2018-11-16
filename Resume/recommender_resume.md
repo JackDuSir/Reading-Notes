@@ -1,28 +1,44 @@
 ## 项目描述 -- 电影推荐系统
 
-**项目概括**：使用MovieLens 20M数据集，实现User CF、Item CF、KNN BallTree搜索、MF推荐。
+**项目概括**：使用MovieLens 20M数据集，实现评分最高电影推荐、User CF、KNN BallTree搜索基于内容的推荐。
 
-**数据预处理**：使用pandas对数据做处理，构建电影相关矩阵，构建IDF矩阵，
+- 评分最高电影推荐
 
-**评价指标**：
+  计算每一部电影的评分人数和评分总数，pandas按movieid合并评分人数和评分总数为一张表。按照评分总数排序，推荐TOP K评分最高的电影
 
-**模型搭建**：
+- 基于用户的协同过滤推荐
 
-**模型训练&模型调参**：
+  构建用户对电影的评分矩阵，使用余弦相似度公式计算用户和用户的相似矩阵，获取和用户相似度高的用户，根据设定的评分系数排序评分高的电影id选择TOP K推荐 
 
-**模型评估**：
+- KNN BallTree搜索基于内容的推荐
 
-**项目部署**：
-
-**合理性分析**：
-
-**项目思考**：
+  根据原始数据构建relevance矩阵，构建标签矩阵，对电影有该tag标记为1，构建IDF矩阵。TF_IDF_mat = relevance * IDF_mat。构建评分矩阵new_rating，构建用户标签矩阵(各用户‘最喜爱的电影’应具备的标签) user_tag_mat = new_ratings.dot(TF_IDF_mat)，根据KNN BallTree拟合数据后得到的索引值（movieid）进行推荐
 
 
 
 
 
+分析MovieLens 20M数据集有如下思路：
 
+- userid
+- movieid
+- rating
+- genres（流派）
+- imdbid（电影海报标识）
+- user对movie打的tag
+- 每部movie的tagid对应的相关性
+
+计算每一部电影的评分人数和评分总数，pandas按movieid合并评分人数和评分总数为一张表。
+
+构建user-user和item-item相似矩阵，user cf推荐
+
+
+
+数据预处理：使用pandas对数据做处理，构建电影相关矩阵，构建IDF矩阵，
+
+
+
+MF推荐（矩阵分解）
 
 
 
