@@ -80,6 +80,8 @@
 
 ## 1. SNMP 协议分析
 
+> [SNMPv2c Packet FormatSNMPv2c报文格式](http://www.023wg.com/message/message/cd_feature_snmpv2c_message.html)
+
 关键点：BER 编码
 
 ### 1.1 协议字段
