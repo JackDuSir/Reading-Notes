@@ -504,7 +504,7 @@ DESCRIPTION               -- 描述
 END
 ```
 
-写完后我们测一个 MIB 库有没有问题，在 linux 机器上用 `snmptranslate-Tp -IR TEST-GET-MIB::testGet` 显示结果如下：（这个测试不需要启动 snmpd 进程）
+写完后我们测一个 MIB 库有没有问题，在 linux 机器上用 `snmptranslate -Tp -IR TEST-GET-MIB::testGet` 显示结果如下：（这个测试不需要启动 snmpd 进程）
 
 ```shell
 $ ./snmptranslate -Tp -IR TEST-GET-MIB::testGet
