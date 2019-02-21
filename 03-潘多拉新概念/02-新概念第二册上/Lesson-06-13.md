@@ -4,5 +4,15 @@
 
 <img src="lesson/Lesson-6.png">
 
+## Lesson 7 - Please send me a card
 
+<img src="lesson/Lesson-7.png">
+
+## Lesson 8 - An Exciting Trip
+
+<img src="lesson/Lesson-8.png">
+
+## Lesson 9 - An Exciting Trip
+
+<img src="lesson/Lesson-9.png">
 
