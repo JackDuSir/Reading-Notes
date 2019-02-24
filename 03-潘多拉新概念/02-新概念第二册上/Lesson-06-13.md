@@ -23,3 +23,7 @@
 ## Lesson 11 - A Wrong Number
 
 <img src="lesson/Lesson-11.png">
+
+## Lesson 12 - Travel
+
+<img src="lesson/Lesson-12.png">
