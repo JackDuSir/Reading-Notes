@@ -1,4 +1,4 @@
-# 新概念第二册上 Lesson 06 - 13
+# 新概念第二册上 Lesson 06 - 12
 
 ## Lesson 6 - Please send me a card
 
