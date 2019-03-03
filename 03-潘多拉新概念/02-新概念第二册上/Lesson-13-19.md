@@ -12,5 +12,21 @@
 
 <img src="lesson/Lesson-15.png">
 
+## Lesson 16 - Too Late
+
+<img src="lesson/Lesson-16.png">
+
+## Lesson 17 - Too Late
+
+<img src="lesson/Lesson-17.png">
+
+## Lesson 18 - The Best and the Worst
+
+<img src="lesson/Lesson-18.png">
+
+## Lesson 19 - The Best and the Worst
+
+<img src="lesson/Lesson-19.png">
+
 
 
