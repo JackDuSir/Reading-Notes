@@ -46,21 +46,25 @@ as 一般指动作同时发生
 
 
 
-## Lesson 23 - 
+## Lesson 23 - Not For Jazz
 
-<img src="lesson/Lesson-21.png">
+<img src="lesson/Lesson-23.png">
+
+destroy & ruin & break & damage
+
+
 
 ## Lesson 24 -
 
-<img src="lesson/Lesson-21.png">
+<img src="lesson/Lesson-24.png">
 
 ## Lesson 25 - 
 
-<img src="lesson/Lesson-21.png">
+<img src="lesson/Lesson-25.png">
 
 ## Lesson 26 -
 
-<img src="lesson/Lesson-21.png">
+<img src="lesson/Lesson-26.png">
 
 
 
