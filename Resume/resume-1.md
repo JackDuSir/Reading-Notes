@@ -8,13 +8,13 @@
 
 > [总结：常见算法工程师面试题目整理(一)](https://www.jianshu.com/p/c3c921dca07b)
 >
-> []()
+> [总结：常见算法工程师面试题目整理(二)](https://www.jianshu.com/p/4f91f0dcba95)
 >
-> []()
+> [算法工程师面试总结](https://zhuanlan.zhihu.com/p/28760907)
 >
-> []()
+> [如何准备机器学习工程师的面试 ？](https://zhuanlan.zhihu.com/p/29969587)
 >
-> []()
+> [机器学习/算法19家公司面试总结（内含薪资）](https://www.jianshu.com/p/fc9b6e1b4041)
 >
 > []()
 
