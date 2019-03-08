@@ -54,7 +54,7 @@ destroy & ruin & break & damage
 
 
 
-## Lesson 24 -
+## Lesson 24 - Not For Jazz
 
 <img src="lesson/Lesson-24.png">
 
