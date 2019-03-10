@@ -58,11 +58,11 @@ destroy & ruin & break & damage
 
 <img src="lesson/Lesson-24.png">
 
-## Lesson 25 - 
+## Lesson 25 - One Good Turn Deserves Another
 
 <img src="lesson/Lesson-25.png">
 
-## Lesson 26 -
+## Lesson 26 - One Good Turn Deserves Another
 
 <img src="lesson/Lesson-26.png">
 
