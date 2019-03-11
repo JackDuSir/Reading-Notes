@@ -6,25 +6,25 @@
 
 ## Lesson 28 - 
 
-<img src="lesson/Lesson-27.png">
+<img src="lesson/Lesson-28.png">
 
 ## Lesson 29 - 
 
-<img src="lesson/Lesson-27.png">
+<img src="lesson/Lesson-29.png">
 
 ## Lesson 30 - 
 
-<img src="lesson/Lesson-27.png">
+<img src="lesson/Lesson-30.png">
 
 ## Lesson 31 -
 
-<img src="lesson/Lesson-27.png">
+<img src="lesson/Lesson-31.png">
 
 ## Lesson 32 - 
 
-<img src="lesson/Lesson-27.png">
+<img src="lesson/Lesson-32.png">
 
 ## Lesson 33 -
 
-<img src="lesson/Lesson-27.png">
+<img src="lesson/Lesson-33.png">
 
