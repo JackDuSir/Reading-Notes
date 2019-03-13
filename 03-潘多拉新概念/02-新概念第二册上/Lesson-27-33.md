@@ -1,10 +1,10 @@
 # 新概念第二册上 Lesson 27 - 33
 
-## Lesson 27 - 
+## Lesson 27 - Goodbye And Good Luck
 
 <img src="lesson/Lesson-27.png">
 
-## Lesson 28 - 
+## Lesson 28 - Goodbye And Good Luck
 
 <img src="lesson/Lesson-28.png">
 
