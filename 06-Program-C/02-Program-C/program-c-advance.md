@@ -376,6 +376,521 @@ void test(void)
 }
 ```
 
+### 2.6 字符串指针强化
+
+**字符串是以0或者'\0'结尾的字符数组，(数字0和字符'\0'等价)**
+
+**如果以字符串初始化，那么编译器默认会在字符串尾部添加'\0'**
+
+```c
+char str3[] = "hello";
+```
+
+- sizeof 计算数组大小，数组包含'\0'字符
+
+- strlen 计算字符串的长度，到'\0'结束
+
+字符串拷贝功能实现：
+
+```c
+//1）应该判断下传入的参数是否为NULL
+//2）最好不要直接使用形参
+int copy_string04(char* dest, char* source){
+	if (dest == NULL){
+        return -1;
+	}
+	if (source == NULL){
+		return -2;
+	}
+
+	char* src = source;
+	char* tar = dest;
+
+	while (*tar++ = *src++){}
+
+	return 0;
+}
+```
+
+字符串的格式化：
+
+```c
+#include <stdio.h>
+int sprintf(char *str, const char *format, ...);
+功能：
+     根据参数format字符串来转换并格式化数据，然后将结果输出到str指定的空间中，直到出现字符串结束符 '\0' 为止。
+参数： 
+	str：字符串首地址
+	format：字符串格式，用法和printf()一样
+返回值：
+	成功：实际格式化的字符个数
+	失败： - 1
+```
+
+```c
+//1. 格式化字符串
+char buf[1024] = { 0 };
+sprintf(buf, "你好,%s,欢迎加入我们!", "John");
+printf("buf:%s\n",buf);
+
+memset(buf, 0, 1024);
+sprintf(buf, "我今年%d岁了!", 20);
+printf("buf:%s\n", buf);
+
+//2. 拼接字符串
+memset(buf, 0, 1024);
+char str1[] = "hello";
+char str2[] = "world";
+int len = sprintf(buf,"%s %s",str1,str2);
+printf("buf:%s len:%d\n", buf,len);
+
+//3. 数字转字符串
+memset(buf, 0, 1024);
+int num = 100;
+sprintf(buf, "%d", num);
+printf("buf:%s\n", buf);
+//设置宽度 右对齐
+memset(buf, 0, 1024);
+sprintf(buf, "%8d", num);
+printf("buf:%s\n", buf);
+//设置宽度 左对齐
+memset(buf, 0, 1024);
+sprintf(buf, "%-8d", num);
+printf("buf:%s\n", buf);
+```
+
+```c
+#include <stdio.h>
+int sscanf(const char *str, const char *format, ...);
+功能：
+    从str指定的字符串读取数据，并根据参数format字符串来转换并格式化数据。
+参数：
+	str：指定的字符串首地址
+	format：字符串格式，用法和scanf()一样
+返回值：
+	成功：实际读取的字符个数
+	失败： - 1
+```
+
+| **格式**   | **作用**                           |
+| ---------- | ---------------------------------- |
+| `%*s或%*d` | 跳过数据                           |
+| %[width]s  | 读指定宽度的数据                   |
+| %[a-z]     | 匹配a到z中任意字符(尽可能多的匹配) |
+| %[aBc]     | 匹配a、B、c中一员，贪婪性          |
+| `%[^a]`    | 匹配非a的任意字符，贪婪性          |
+| `%[^a-z]`  | 表示读取除a-z以外的所有字符        |
+
+```c
+//1. 跳过数据
+void test01(){
+	char buf[1024] = { 0 };
+	//跳过前面的数字
+	//匹配第一个字符是否是数字，如果是，则跳过
+	//如果不是则停止匹配
+	sscanf("123456aaaa", "%*d%s", buf); 
+	printf("buf:%s\n",buf);
+}
+
+//2. 读取指定宽度数据
+void test02(){
+	char buf[1024] = { 0 };
+	//跳过前面的数字
+	sscanf("123456aaaa", "%7s", buf);
+	printf("buf:%s\n", buf);
+}
+
+//3. 匹配a-z中任意字符
+void test03(){
+	char buf[1024] = { 0 };
+	//跳过前面的数字
+  	//先匹配第一个字符，判断字符是否是a-z中的字符，如果是匹配
+	//如果不是停止匹配
+	sscanf("abcdefg123456", "%[a-z]", buf);
+	printf("buf:%s\n", buf);
+}
+
+//4. 匹配aBc中的任何一个
+void test04(){
+	char buf[1024] = { 0 };
+	//跳过前面的数字
+	//先匹配第一个字符是否是aBc中的一个，如果是，则匹配，如果不是则停止匹配
+	sscanf("abcdefg123456", "%[aBc]", buf);
+	printf("buf:%s\n", buf);
+}
+
+//5. 匹配非a的任意字符
+void test05(){
+	char buf[1024] = { 0 };
+	//跳过前面的数字
+	//先匹配第一个字符是否是aBc中的一个，如果是，则匹配，如果不是则停止匹配
+	sscanf("bcdefag123456", "%[^a]", buf);
+	printf("buf:%s\n", buf);
+}
+
+//6. 匹配非a-z中的任意字符
+void test06(){
+	char buf[1024] = { 0 };
+	//跳过前面的数字
+	//先匹配第一个字符是否是aBc中的一个，如果是，则匹配，如果不是则停止匹配
+	sscanf("123456ABCDbcdefag", "%[^a-z]", buf);
+	printf("buf:%s\n", buf);
+}  
+```
+
+#### 2.6.1 一级指针易错点
+
+- 越界
+- 指针叠加会不断改变指针指向 `p++`
+
+- 返回局部变量地址
+
+```c
+char *get_str()
+{
+	char str[] = "abcdedsgads"; //栈区，
+	printf("[get_str]str = %s\n", str);
+	return str;
+}
+```
+
+- 同一块内存释放多次
+  - free()函数的功能只是告诉系统 p 指向的内存可以回收了。就是说，p 指向的内存使用权交还给系统。但是，p的值还是原来的值(野指针)，p还是指向原来的内存
+
+### 2.7 const使用
+
+```c
+//const修饰变量
+void test01(){
+	//1. const基本概念
+	const int i = 0;
+	//i = 100; //错误，只读变量初始化之后不能修改
+
+	//2. 定义const变量最好初始化
+	const int j;
+	//j = 100; //错误，不能再次赋值
+
+	//3. c语言的const是一个只读变量，并不是一个常量，可通过指针间接修改
+	const int k = 10;
+	//k = 100; //错误，不可直接修改，我们可通过指针间接修改
+	printf("k:%d\n", k);
+	int* p = &k;
+	*p = 100;
+	printf("k:%d\n", k);
+}
+
+//const 修饰指针
+void test02(){
+
+	int a = 10;
+	int b = 20;
+	//const放在*号左侧 修饰p_a指针指向的内存空间不能修改,但可修改指针的指向
+	const int* p_a = &a;
+	//*p_a = 100; //不可修改指针指向的内存空间
+	p_a = &b; //可修改指针的指向
+
+	//const放在*号的右侧， 修饰指针的指向不能修改，但是可修改指针指向的内存空间
+	int* const p_b = &a;
+	//p_b = &b; //不可修改指针的指向
+	*p_b = 100; //可修改指针指向的内存空间
+
+	//指针的指向和指针指向的内存空间都不能修改
+	const int* const p_c = &a;
+}
+//const指针用法
+struct Person{
+	char name[64];
+	int id;
+	int age;
+	int score;
+};
+
+//每次都对对象进行拷贝，效率低，应该用指针
+void printPersonByValue(struct Person person){
+	printf("Name:%s\n", person.name);
+	printf("Name:%d\n", person.id);
+	printf("Name:%d\n", person.age);
+	printf("Name:%d\n", person.score);
+}
+
+//但是用指针会有副作用，可能会不小心修改原数据
+void printPersonByPointer(const struct Person *person){
+	printf("Name:%s\n", person->name);
+	printf("Name:%d\n", person->id);
+	printf("Name:%d\n", person->age);
+	printf("Name:%d\n", person->score);
+}
+void test03(){
+	struct Person p = { "Obama", 1101, 23, 87 };
+	//printPersonByValue(p);
+	printPersonByPointer(&p);
+}
+```
+
+## 三、指针的指针(二级指针)
+
+```c
+int a = 12;
+int *b = &a;
+int **c = &b;
+```
+
+它在内存中的大概模样大致如下：
+
+<img src="image/二级指针.png">
+
+### 3.1 二级指针做形参输出特性
+
+二级指针做参数的输出特性是指由被调函数分配内存。
+
+```c
+//被调函数,由参数n确定分配多少个元素内存
+void allocate_space(int **arr,int n){
+	//堆上分配n个int类型元素内存
+	int *temp = (int *)malloc(sizeof(int)* n);
+	if (NULL == temp){
+		return;
+	}
+	//给内存初始化值
+	int *pTemp = temp;
+	for (int i = 0; i < n;i ++){
+		//temp[i] = i + 100;
+		*pTemp = i + 100;
+		pTemp++;
+	}
+	//指针间接赋值
+	*arr = temp;
+}
+//打印数组
+void print_array(int *arr,int n){
+	for (int i = 0; i < n;i ++){
+		printf("%d ",arr[i]);
+	}
+	printf("\n");
+}
+//二级指针输出特性(由被调函数分配内存)
+void test(){
+	int *arr = NULL;
+	int n = 10;
+	//给arr指针间接赋值
+	allocate_space(&arr,n);
+	//输出arr指向数组的内存
+	print_array(arr, n);
+	//释放arr所指向内存空间的值
+	if (arr != NULL){
+		free(arr);
+		arr = NULL;
+	}
+}
+```
+
+### 3.2 二级指针做形参输入特性
+
+二级指针做形参输入特性是指由主调函数分配内存。
+
+```c
+//打印数组
+void print_array(int **arr,int n){
+	for (int i = 0; i < n;i ++){
+		printf("%d ",*(arr[i]));
+	}
+	printf("\n");
+}
+//二级指针输入特性(由主调函数分配内存)
+void test(){
+	
+	int a1 = 10;
+	int a2 = 20;
+	int a3 = 30;
+	int a4 = 40;
+	int a5 = 50;
+
+	int n = 5;
+
+	int** arr = (int **)malloc(sizeof(int *) * n);
+	arr[0] = &a1;
+	arr[1] = &a2;
+	arr[2] = &a3;
+	arr[3] = &a4;
+	arr[4] = &a5;
+
+	print_array(arr,n);
+
+	free(arr);
+	arr = NULL;
+}
+```
+
+## 四、位运算
+
+### 4.1 位逻辑运算符
+
+4个位运算符用于整型数据，包括char.将这些位运算符成为位运算的原因是它们对每位进行操作，而不影响左右两侧的位。请不要将这些运算符与常规的逻辑运算符(&& 、||和!)相混淆，常规的位的逻辑运算符对整个值进行操作。
+
+- **按位取反~**
+
+```c
+unsigned char a = 2;   //00000010
+unsigned char b = ~a;  //11111101
+printf("ret = %d\n", a); //ret = 2
+printf("ret = %d\n", b); //ret = 253
+```
+
+- **位与（AND）: &**
+  - 二进制运算符&通过对两个操作数逐位进行比较产生一个新值。对于每个位，只有两个操作数的对应位都是1时结果才为1。
+
+- **位或（OR）: |**
+  - 二进制运算符|通过对两个操作数逐位进行比较产生一个新值。对于每个位，如果其中任意操作数中对应的位为1，那么结果位就为1.
+
+- **位异或:**
+  - 二进制运算符 `^` 对两个操作数逐位进行比较。对于每个位，如果操作数中的对应位有一个是1(但不是都是1)，那么结果是1.如果都是0或者都是1，则结果位0.
+
+```c
+  (10010011) 
+^ (00111101)
+= (10101110)
+```
+
+**用法**：
+
+- 打开位
+
+已知：10011010：
+1. 将位2打开
+
+   `flag | 10011010`
+
+```c
+  (10011010)
+| (00000100)
+= (10011110)
+```
+
+2. 将所有位打开。
+
+   `flag | ~flag`
+
+```c
+  (10011010)
+| (01100101)
+= (11111111)
+```
+
+- 关闭位
+
+  `flag & ~flag`
+
+```c
+  (10011010)
+& (01100101)
+= (00000000)
+```
+
+- 转置位
+
+  - 转置(toggling)一个位表示如果该位打开，则关闭该位；如果该位关闭，则打开。您可以使用位异或运算符来转置。其思想是如果b是一个位(1或0)，那么如果b为1则 `b^1` 为0，如果b为0，则 `1^b` 为1。无论b的值是0还是1, `0^b` 为b.
+
+  `flag ^ 0xff`
+
+``` c
+  (10010011)
+^ (11111111)
+= (01101100)
+```
+
+- 交换两个数不需要临时变量
+
+```c
+//a ^ b = temp;
+//a ^ temp = b;
+//b ^ temp = a
+  (10010011)
+^ (00100110)
+= (10110101)
+
+  (10110101)
+^ (00100110)
+   10010011
+
+#include <stdio.h>
+int main(int argc, char *argv[])
+{
+    int a = 2, b = 6;
+
+    a = a ^ b;
+    b = b ^ a;
+    a = a ^ b;
+
+    printf("a = %d b = %d/n", a, b);
+
+    return 0;
+}
+```
+
+### 4.2 移位运算符
+
+- **左移 <<**
+
+  - 左移运算符 `<<` 将其左侧操作数的值的每位向左移动，移动的位数由其右侧操作数指定。空出来的位用0填充，并且丢弃移出左侧操作数末端的位。在下面例子中，每位向左移动两个位置。
+
+  - 左移一位相当于原值 `*2`.
+
+```c
+(10001010) << 2
+(00101000)
+    
+1 << 1 = 2;
+2 << 1 = 4;
+4 << 1 = 8;
+8 << 2 = 32
+```
+
+- **右移 >>**
+  - 右移运算符 `>>` 将其左侧的操作数的值每位向右移动，移动的位数由其右侧的操作数指定。丢弃移出左侧操作数有段的位。对于unsigned类型，使用0填充左端空出的位。**对于有符号类型，结果依赖于机器。空出的位可能用0填充，或者使用符号(最左端)位的副本填充**。
+
+```c
+//有符号值
+(10001010) >> 2
+(00100010)     //在某些系统上的结果值
+
+(10001010) >> 2
+(11100010)     //在另一些系统上的解雇
+
+//无符号值
+(10001010) >> 2
+(00100010)    //所有系统上的结果值
+```
+
+**用法：移位运算符**：
+
+- 移位运算符能够提供快捷、高效（依赖于硬件）对2的幂的乘法和除法。
+
+| number << n | number乘以2的n次幂                     |
+| ----------- | -------------------------------------- |
+| number >> n | 如果number非负，则用number除以2的n次幂 |
+
+## 五、多维数组
+
+**一维数组**：
+
+- 元素类型角度：数组是相同类型的变量的有序集合
+- 内存角度：连续的一大片内存空间
+
+**请问：指针和数组是等价的吗？**
+
+答案是**否定**的。数组名在表达式中使用的时候，编译器才会产生一个指针常量。那么数组在什么情况下不能作为指针常量呢？在以下两种场景下：
+
+- 当数组名作为sizeof操作符的操作数的时候，此时sizeof返回的是整个数组的长度，而不是指针数组指针的长度。
+- 当数组名作为&操作符的操作数的时候，此时返回的是一个指向数组的指针，而不是指向某个数组元素的指针常量。
+
+```c
+int arr[10];
+//arr = NULL; //arr作为指针常量，不可修改
+int *p = arr; //此时arr作为指针常量来使用
+printf("sizeof(arr):%d\n", sizeof(arr)); //此时sizeof结果为整个数组的长度
+printf("&arr type is %s\n", typeid(&arr).name()); //int(*)[10]而不是int*
+```
+
 
 
 
