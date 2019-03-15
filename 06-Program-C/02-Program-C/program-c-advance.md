@@ -871,7 +871,7 @@ int main(int argc, char *argv[])
 
 ## 五、多维数组
 
-**一维数组**：
+### 5.1 一维数组
 
 - 元素类型角度：数组是相同类型的变量的有序集合
 - 内存角度：连续的一大片内存空间
@@ -891,6 +891,1348 @@ printf("sizeof(arr):%d\n", sizeof(arr)); //此时sizeof结果为整个数组的�
 printf("&arr type is %s\n", typeid(&arr).name()); //int(*)[10]而不是int*
 ```
 
+**下标引用**：
+
+```c
+int arr[] = { 1, 2, 3, 4, 5, 6 };
+```
+
+- ***(arr + 3)** ,这个表达式是什么意思呢？
+  - 首先，我们说数组在表达式中是一个指向整型的指针，所以此表达式表示arr指针向后移动了3个元素的长度。然后通过间接访问操作符从这个新地址开始获取这个位置的值。这个和下标的引用的执行过程完全相同。所以如下表达式是等同的：
+
+```c
+*(arr + 3)
+arr[3]
+```
+
+**问题 1**：数组下标可否为负值？
+
+**问题 2**：请阅读如下代码，说出结果：
+
+```c
+int arr[] = { 5, 3, 6, 8, 2, 9 };
+int *p = arr + 2;
+printf("*p = %d\n", *p); 		// 6
+printf("*p = %d\n", p[-1]);		// 3
+```
+
+#### 5.1.1 数组和指针
+
+指针和数组并不是相等的。为了说明这个概念，请考虑下面两个声明
+
+```c
+int a[10];
+int *b;
+```
+
+声明一个数组时，编译器根据声明所指定的元素数量为数组分配内存空间，然后再创建数组名，指向这段空间的起始位置。声明一个指针变量的时候，编译器只为指针本身分配内存空间，并不为任何整型值分配内存空间，指针并未初始化指向任何现有的内存空间。
+
+因此，表达式 `*a` 是完全合法的，但是表达式 `*b` 却是非法的。`*b` 将访问内存中一个不确定的位置，将会导致程序终止。另一方面 b++ 可以通过编译，a++ 却不行，因为 a 是一个常量值。
+
+#### 5.1.2 作为函数参数的数组名
+
+当一个数组名作为一个参数传递给一个函数的时候发生什么情况呢？我们现在知道数组名其实就是一个指向数组第1个元素的指针，所以很明白此时传递给函数的是一份指针的拷贝。所以函数的形参实际上是一个指针。但是为了使程序员新手容易上手一些，编译器也接受数组形式的函数形参。因此下面两种函数原型是相等的：
+
+```c
+int print_array(int *arr);
+int print_array(int arr[]);
+```
+
+我们可以使用任何一种声明，但哪一个更准确一些呢？答案是指针。因为实参实际上是个指针，而不是数组。**同样sizeof arr值是指针的长度，而不是数组的长度**。
+
+现在我们清楚了，**为什么一维数组中无须写明它的元素数目了，因为形参只是一个指针，并不需要为数组参数分配内存。另一方面，这种方式使得函数无法知道数组的长度。如果函数需要知道数组的长度，它必须显式传递一个长度参数给函数**。
+
+### 5.2 多维数组
+
+**数组名**：
+
+- 一维数组名的值是一个指针常量，它的类型是“指向元素类型的指针”，它指向数组的第1个元素。多维数组也是同理，多维数组的数组名也是指向第一个元素，只不过第一个元素是一个数组。例如：
+
+```c
+int arr[3][10]
+```
+
+可以理解为这是一个一维数组，包含了3个元素，只是每个元素恰好是包含了10个元素的数组。arr就表示指向它的第1个元素的指针，所以arr是一个指向了包含了10个整型元素的数组的指针。
+
+**指向数组的指针(数组指针)**：
+
+数组指针，它是指针，指向数组的指针。
+
+数组的类型由**元素类型**和**数组大小**共同决定：int array[5]  的类型为  int[5]；C语言可通过typedef定义一个数组类型：
+
+定义数组指针有一下三种方式：
+
+```c
+//方式一
+void test01(){
+
+	//先定义数组类型，再用数组类型定义数组指针
+	int arr[10] = {1,2,3,4,5,6,7,8,9,10};
+	//有typedef是定义类型，没有则是定义变量,下面代码定义了一个数组类型ArrayType
+	typedef int(ArrayType)[10];
+	//int ArrayType[10]; //定义一个数组，数组名为ArrayType
+
+	ArrayType myarr; //等价于 int myarr[10];
+	ArrayType* pArr = &arr; //定义了一个数组指针pArr，并且指针指向数组arr
+	for (int i = 0; i < 10;i++){
+		printf("%d ",(*pArr)[i]);
+	}
+	printf("\n");
+}
+
+//方式二
+void test02(){
+
+	int arr[10];
+	//定义数组指针类型
+	typedef int(*ArrayType)[10];
+	ArrayType pArr = &arr; //定义了一个数组指针pArr，并且指针指向数组arr
+	for (int i = 0; i < 10; i++){
+		(*pArr)[i] = i + 1;
+	}
+	for (int i = 0; i < 10; i++){
+		printf("%d ", (*pArr)[i]);
+	}
+	printf("\n");
+
+}
+
+//方式三
+void test03(){
+	
+	int arr[10];
+	int(*pArr)[10] = &arr;
+
+	for (int i = 0; i < 10; i++){
+		(*pArr)[i] = i + 1;
+
+	}
+	for (int i = 0; i < 10; i++){
+		printf("%d ", (*pArr)[i]);
+	}
+	printf("\n");
+}
+```
+
+#### 5.2.1 指针数组(元素为指针)
+
+**栈区指针数组**：
+
+```c
+//数组做函数函数，退化为指针
+void array_sort(char** arr,int len){
+
+	for (int i = 0; i < len; i++){
+		for (int j = len - 1; j > i; j --){
+			//比较两个字符串
+			if (strcmp(arr[j-1],arr[j]) > 0){
+				char* temp = arr[j - 1];
+				arr[j - 1] = arr[j];
+				arr[j] = temp;
+			}
+		}
+	}
+}
+
+//打印数组
+void array_print(char** arr,int len){
+	for (int i = 0; i < len;i++){
+		printf("%s\n",arr[i]);
+	}
+	printf("----------------------\n");
+}
+
+void test(){
+	//主调函数分配内存
+	//指针数组
+	char* p[] = { "bbb", "aaa", "ccc", "eee", "ddd"};
+	//char** p = { "aaa", "bbb", "ccc", "ddd", "eee" }; //错误
+	int len = sizeof(p) / sizeof(char*);
+	//打印数组
+	array_print(p, len);
+	//对字符串进行排序
+	array_sort(p, len);
+	//打印数组
+	array_print(p, len);
+}
+```
+
+**堆区指针数组**：
+
+```c
+//分配内存
+char** allocate_memory(int n){
+	if (n < 0 ){
+		return NULL;
+	}
+
+	char** temp = (char**)malloc(sizeof(char*) * n);
+	if (temp == NULL){
+		return NULL;
+	}
+
+	//分别给每一个指针malloc分配内存
+	for (int i = 0; i < n; i ++){
+		temp[i] = malloc(sizeof(char)* 30);
+		sprintf(temp[i], "%2d_hello world!", i + 1);
+	}
+	return temp;
+}
+
+//打印数组
+void array_print(char** arr,int len){
+	for (int i = 0; i < len;i++){
+		printf("%s\n",arr[i]);
+	}
+	printf("----------------------\n");
+}
+
+//释放内存
+void free_memory(char** buf,int len){
+	if (buf == NULL){
+		return;
+	}
+	for (int i = 0; i < len; i ++){
+		free(buf[i]);
+		buf[i] = NULL;
+	}
+	free(buf);
+}
+
+void test(){
+	int n = 10;
+	char** p = allocate_memory(n);
+	//打印数组
+	array_print(p, n);
+	//释放内存
+	free_memory(p, n);
+}
+```
+
+**二维数组的线性存储特性式**：
+
+```c
+void PrintArray(int* arr, int len){
+	for (int i = 0; i < len; i++){
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+}
+
+//二维数组的线性存储
+void test(){
+	int arr[][3] = {
+		{ 1, 2, 3 },
+		{ 4, 5, 6 },
+		{ 7, 8, 9 }
+	};
+
+	int arr2[][3] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int len = sizeof(arr2) / sizeof(int);
+
+	//如何证明二维数组是线性的？
+	//通过将数组首地址指针转成Int*类型，那么步长就变成了4，就可以遍历整个数组
+	int* p = (int*)arr;
+	for (int i = 0; i < len; i++){
+		printf("%d ", p[i]);
+	}
+	printf("\n");
+
+	PrintArray((int*)arr, len);
+	PrintArray((int*)arr2, len);
+}
+```
+
+**二维数组的3种形式参数**：
+
+```c
+//二维数组的第一种形式
+void PrintArray01(int arr[3][3]){
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			printf("arr[%d][%d]:%d\n", i, j, arr[i][j]);
+		}
+	}
+}
+
+//二维数组的第二种形式
+void PrintArray02(int arr[][3]){
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			printf("arr[%d][%d]:%d\n", i, j, arr[i][j]);
+		}
+	}
+}
+
+//二维数组的第二种形式
+void PrintArray03(int(*arr)[3]){
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			printf("arr[%d][%d]:%d\n", i, j, arr[i][j]);
+		}
+	}
+}
+
+void test(){
+	int arr[][3] = { 
+		{ 1, 2, 3 },
+		{ 4, 5, 6 },
+		{ 7, 8, 9 }
+	};
+	
+	PrintArray01(arr);
+	PrintArray02(arr);
+	PrintArray03(arr);
+}
+```
+
+### 5.3 总结
+
+**编程提示**：
+
+- 源代码的可读性几乎总是比程序的运行时效率更为重要
+- **只要有可能，函数的指针形参都应该声明为const**
+- 在多维数组的初始值列表中使用完整的多层花括号提供可读性
+
+**内容总结**：
+
+- 在绝大多数表达式中，数组名的值是指向数组第1个元素的指针。**这个规则只有两个例外，sizeof和对数组名&**。
+- 指针和数组并不相等。当我们声明一个数组的时候，同时也分配了内存。但是声明指针的时候，只分配容纳指针本身的空间。
+- 当数组名作为函数参数时，实际传递给函数的是一个指向数组第1个元素的指针。
+- 我们不单可以创建指向普通变量的指针，也可创建指向数组的指针。
+
+## 六、结构体
+
+### 6.1 结构体基础知识
+
+结构体类型的定义
+
+```c
+struct Person{
+	char name[64];
+	int age;
+};
+
+typedef struct _PERSON{
+	char name[64];
+	int age;
+}Person;
+```
+
+**注意：**定义结构体类型时不要直接给成员赋值，结构体只是一个类型，编译器还没有为其分配空间，只有根据其类型定义变量时，才分配空间，有空间后才能赋值。
+
+**结构体变量的定义**
+
+```c
+struct Person{
+	char name[64];
+	int age;
+}p1; //定义类型同时定义变量
+
+struct{
+	char name[64];
+	int age;
+}p2; //定义类型同时定义变量
+
+struct Person p3; //通过类型直接定义
+```
+
+**结构体成员的使用**
+
+```c
+struct Person{
+	char name[64];
+	int age;
+};
+void test(){
+	//在栈上分配空间
+	struct Person p1;
+	strcpy(p1.name, "John");
+	p1.age = 30;
+	//如果是普通变量，通过点运算符操作结构体成员
+	printf("Name:%s Age:%d\n", p1.name, p1.age);
+
+	//在堆上分配空间
+	struct Person* p2 = (struct Person*)malloc(sizeof(struct Person));
+	strcpy(p2->name, "Obama");
+	p2->age = 33;
+	//如果是指针变量，通过->操作结构体成员
+	printf("Name:%s Age:%d\n", p2->name, p2->age);
+}
+```
+
+**深拷贝和浅拷贝**
+
+```c
+//一个老师有N个学生
+typedef struct _TEACHER{
+	char* name;
+}Teacher;
+
+void test(){
+	Teacher t1;
+	t1.name = malloc(64);
+	strcpy(t1.name , "John");
+
+	Teacher t2;
+	t2 = t1;
+
+	//对手动开辟的内存，需要手动拷贝
+	t2.name = malloc(64);
+	strcpy(t2.name, t1.name);
+
+	if (t1.name != NULL){
+		free(t1.name);
+		t1.name = NULL;
+	}
+	if (t2.name != NULL){
+		free(t2.name);
+		t1.name = NULL;
+	}
+}
+```
+
+**结构体数组**
+
+```c
+struct Person{
+	char name[64];
+	int age;
+};
+
+void test(){
+	//在栈上分配空间
+	struct Person p1[3] = {
+		{ "John", 30 },
+		{ "Obama", 33 },
+		{ "Edward", 25}
+	};
+
+	struct Person p2[3] = { "John", 30, "Obama", 33, "Edward", 25 };
+	for (int i = 0; i < 3;i ++){
+		printf("Name:%s Age:%d\n",p1[i].name,p1[i].age);
+	}
+	printf("-----------------\n");
+	for (int i = 0; i < 3; i++){
+		printf("Name:%s Age:%d\n", p2[i].name, p2[i].age);
+	}
+	printf("-----------------\n");
+	//在堆上分配结构体数组
+	struct Person* p3 = (struct Person*)malloc(sizeof(struct Person) * 3);
+	for (int i = 0; i < 3;i++){
+		sprintf(p3[i].name, "Name_%d", i + 1);
+		p3[i].age = 20 + i;
+	}
+	for (int i = 0; i < 3; i++){
+		printf("Name:%s Age:%d\n", p3[i].name, p3[i].age);
+	}
+}
+```
+
+### 6.2 结构体嵌套指针
+
+**结构体嵌套一级指针**
+
+```c
+struct Person{
+	char* name;
+	int age;
+};
+
+void allocate_memory(struct Person** person){
+	if (person == NULL){
+		return;
+	}
+	struct Person* temp = (struct Person*)malloc(sizeof(struct Person));
+	if (temp == NULL){
+		return;
+	}
+	//给name指针分配内存
+	temp->name = (char*)malloc(sizeof(char)* 64);
+	strcpy(temp->name, "John");
+	temp->age = 100;
+
+	*person = temp;
+}
+
+void print_person(struct Person* person){
+	printf("Name:%s Age:%d\n",person->name,person->age);
+}
+
+void free_memory(struct Person** person){
+	if (person == NULL){
+		return;
+	}
+	struct Person* temp = *person;
+	if (temp->name != NULL){
+		free(temp->name);
+		temp->name = NULL;
+	}
+
+	free(temp);
+}
+
+void test(){
+	struct Person *p = NULL;
+	allocate_memory(&p);
+	print_person(p);
+	free_memory(&p);
+}
+```
+
+**结构体嵌套二级指针**
+
+```c
+//一个老师有N个学生
+typedef struct _TEACHER{
+	char name[64];
+	char** students;
+}Teacher;
+
+void create_teacher(Teacher** teacher,int n,int m){
+	if (teacher == NULL){
+		return;
+	}
+
+	//创建老师数组
+	Teacher* teachers = (Teacher*)malloc(sizeof(Teacher)* n);
+	if (teachers == NULL){
+		return;
+	}
+
+	//给每一个老师分配学生
+	int num = 0;
+	for (int i = 0; i < n; i ++){
+		sprintf(teachers[i].name, "老师_%d", i + 1);
+		teachers[i].students = (char**)malloc(sizeof(char*) * m);
+		for (int j = 0; j < m;j++){
+			teachers[i].students[j] = malloc(64);
+			sprintf(teachers[i].students[j], "学生_%d", num + 1);
+			num++;
+		}
+	}
+	*teacher = teachers;	
+}
+
+void print_teacher(Teacher* teacher,int n,int m){
+	for (int i = 0; i < n; i ++){
+		printf("%s:\n", teacher[i].name);
+		for (int j = 0; j < m;j++){
+			printf("  %s",teacher[i].students[j]);
+		}
+		printf("\n");
+	}
+}
+
+void free_memory(Teacher** teacher,int n,int m){
+	if (teacher == NULL){
+		return;
+	}
+
+	Teacher* temp = *teacher;
+	for (int i = 0; i < n; i ++){		
+		for (int j = 0; j < m;j ++){
+			free(temp[i].students[j]);
+			temp[i].students[j] = NULL;
+		}
+		free(temp[i].students);
+		temp[i].students = NULL;
+	}
+	free(temp);
+}
+
+void test(){
+	Teacher* p = NULL;
+	create_teacher(&p,2,3);
+	print_teacher(p, 2, 3);
+	free_memory(&p,2,3);
+}
+```
+
+### 6.3 结构体成员偏移量
+
+```c
+//一旦结构体定义下来，则结构体中的成员内存布局就定下了
+typedef struct Teacher {
+	char a;  
+	int b;      
+	int c;        
+
+} Teacher;
+
+void test(){
+	Teacher  t1;
+	Teacher*p = NULL;
+	p = &t1;
+
+	int offsize1 = (int)&(p->b) - (int)p;  //age 相对于结构体 Teacher的偏移量
+	int offsize2 = (int)&(((Teacher *)0)->b);//绝对0地址 age的偏移量
+	int offsize3 = offsetof(Teacher, b);
+
+	printf("offsize1:%d \n", offsize1);
+	printf("offsize2:%d \n", offsize2);
+	printf("offsize3:%d \n", offsize3);
+}
+```
+
+### 6.4 结构体字节对齐
+
+在用sizeof运算符求算某结构体所占空间时，并不是简单地将结构体中所有元素各自占的空间相加，这里涉及到内存字节对齐的问题。
+
+从理论上讲，对于任何变量的访问都可以从任何地址开始访问，但是事实上不是如此，实际上访问特定类型的变量只能在特定的地址访问，这就需要各个变量在空间上按一定的规则排列， 而不是简单地顺序排列，这就是**内存对齐**。
+
+#### 6.4.1 内存对齐原因
+
+我们知道内存的最小单元是一个字节，当cpu从内存中读取数据的时候，是一个一个字节读取，但是实际上cpu将内存当成多个块，每次从内存中读取一个块，这个块的大小可能是2、4、8、16等
+
+内存对齐是操作系统为了提高访问内存的策略。操作系统在访问内存的时候，每次读取一定长度(这个长度是操作系统默认的对齐数，或者默认对齐数的整数倍)。如果没有对齐，为了访问一个变量可能产生二次访问。
+
+**为什么要简单内存对齐？**
+
+- 提高存取数据的速度。比如有的平台每次都是从偶地址处读取数据，对于一个int型的变量，若从偶地址单元处存放，则只需一个读取周期即可读取该变量；但是若从奇地址单元处存放，则需要2个读取周期读取该变量。
+- 某些平台只能在特定的地址处访问特定类型的数据，否则抛出硬件异常给操作系统。
+
+#### 6.4.2 如何内存对齐
+
+- 对于标准数据类型，它的地址只要是它的长度的整数倍。
+- 对于非标准数据类型，比如结构体，要遵循一下对齐原则：
+  - 数组成员对齐规则。第一个数组成员应该放在offset为0的地方，以后每个数组成员应该放在offset为**min（当前成员的大小，#pargama pack(n)）**整数倍的地方开始（比如int在32位机器为４字节，#pargama pack(2)，那么从2的倍数地方开始存储）。
+  - 结构体总的大小，也就是sizeof的结果，必须是**min（结构体内部最大成员，#pargama pack(n)）**的整数倍，不足要补齐。
+  - 结构体做为成员的对齐规则。如果一个结构体B里嵌套另一个结构体A,还是以最大成员类型的大小对齐，但是结构体A的起点为A内部最大成员的整数倍的地方。（struct B里存有struct A，A里有char，int，double等成员，那A应该从8的整数倍开始存储。），结构体A中的成员的对齐规则仍满足原则1、原则2。
+
+手动设置对齐模数:
+
+- **#pragma pack(show)**
+  - 显示当前packing alignment的字节数，以warning message的形式被显示。
+- **#pragma pack(push)** 
+  - 将当前指定的packing alignment数组进行压栈操作，这里的栈是the internal compiler stack,同事设置当前的packing alignment为n；如果n没有指定，则将当前的packing alignment数组压栈。
+- **#pragma pack(pop)** 
+  - 从internal compiler stack中删除最顶端的reaord; 如果没有指定n,则当前栈顶record即为新的packing alignement数值；如果指定了n，则n成为新的packing alignment值
+- **#pragma pack(n)**
+  - 指定packing的数值，以字节为单位，缺省数值是8，合法的数值分别是1,2,4,8,16。 
+
+内存对齐案例
+
+```c
+#pragma pack(4)
+typedef struct _STUDENT{
+	int a;
+	char b;
+	double c;
+	float d;
+}Student;
+
+typedef struct _STUDENT2{
+	char a;
+	Student b; 
+	double c;
+}Student2;
+
+void test01(){
+	//Student
+	//a从偏移量0位置开始存储
+	//b从4位置开始存储
+	//c从8位置开始存储
+	//d从12位置开存储
+	//所以Student内部对齐之后的大小为20 ，整体对齐，整体为最大类型的整数倍 也就是8的整数倍 为24
+	printf("sizeof Student:%d\n",sizeof(Student));
+    
+	//Student2 
+	//a从偏移量为0位置开始 8
+	//b从偏移量为Student内部最大成员整数倍开始，也就是8开始 24
+	//c从8的整数倍地方开始,也就是32开始
+	//所以结构体Sutdnet2内部对齐之后的大小为：40 ， 由于结构体中最大成员为8，必须为8的整数倍 所以大小为40
+	printf("sizeof Student2:%d\n", sizeof(Student2));
+}
+```
+
+## 七、文件操作
+
+文件在今天的计算机系统中作用是很重要的。文件用来存放程序、文档、数据、表格、图片和其他很多种类的信息。作为一名程序员，您必须编程来创建、写入和读取文件。编写程序从文件读取信息或者将结果写入文件是一种经常性的需求。C提供了强大的和文件进行通信的方法。使用这种方法我们可以在程序中打开文件，然后使用专门的I/O函数读取文件或者写入文件。
+
+**文件的概念**
+
+- 一个文件通常就是磁盘上一段命名的存储区。但是对于操作系统来说，文件就会更复杂一些。例如，一个大文件可以存储在一些分散的区段中，或者还会包含一些操作系统可以确定其文件类型的附加数据，但是这些是操作系统，而不是我们程序员所要关心的事情。我们应该考虑如何在C程序中处理文件。
+
+**流的概念**
+
+流是一个动态的概念，可以将一个字节形象地比喻成一滴水，字节在设备、文件和程序之间的传输就是流，类似于水在管道中的传输，可以看出，流是对输入输出源的一种抽象，也是对传输信息的一种抽象。
+
+C语言中，I/O操作可以简单地看作是从程序移进或移出字节，这种搬运的过程便称为流(stream)。程序只需要关心是否正确地输出了字节数据，以及是否正确地输入了要读取字节数据，特定I/O设备的细节对程序员是隐藏的。
+
+**文本流**
+
+- 文本流，也就是我们常说的以文本模式读取文件。文本流的有些特性在不同的系统中可能不同。其中之一就是文本行的最大长度。标准规定至少允许254个字符。另一个可能不同的特性是文本行的结束方式。例如在Windows系统中，文本文件约定以一个回车符和一个换行符结尾。但是在Linux下只使用一个换行符结尾。
+- 标准C把文本定义为零个或者多个字符，后面跟一个表示结束的换行符(\n).对于那些文本行的外在表现形式与这个定义不同的系统上，库函数负责外部形式和内部形式之间的翻译。例如，在Windows系统中，在输出时，文本的换行符被写成一对回车/换行符。在输入时，文本中的回车符被丢弃。这种不必考虑文本的外部形势而操纵文本的能力简化了可移植程序的创建。
+
+**二进制流**
+
+- 二进制流中的字节将完全根据程序编写它们的形式写入到文件中，而且完全根据它们从文件或设备读取的形式读入到程序中。它们并未做任何改变。这种类型的流适用于非文本数据，但是如果你不希望I/O函数修改文本文件的行末字符，也可以把它们用于文本文件。
+
+c语言在处理这两种文件的时候并不区分，都看成是字符流，按字节进行处理。
+
+**我们程序中，经常看到的文本方式打开文件和二进制方式打开文件仅仅体现在换行符的处理上**。
+
+比如说，在widows下，文件的换行符是 `\r\n`，而在Linux下换行符则是 `\n`.
+
+当对文件使用文本方式打开的时候，读写的windows文件中的换行符\r\n会被替换成\n读到内存中，当在windows下写入文件的时候，\n被替换成\r\n再写入文件。如果使用二进制方式打开文件，则不进行\r\n和\n之间的转换。 那么由于Linux下的换行符就是\n, 所以文本文件方式和二进制方式无区别。
+
+### 7.1 文件的操作
+
+**文件流总览**
+
+标准库函数是的我们在C程序中执行与文件相关的I/O任务非常方便。下面是关于文件I/O的一般概况。
+
+- 程序为同时处于活动状态的每个文件声明一个指针变量，其类型为 `FILE*`。这个指针指向这个FILE结构，当它处于活动状态时由流使用。
+- 流通过fopen函数打开。为了打开一个流，我们必须指定需要访问的文件或设备以及他们的访问方式(读、写、或者读写)。Fopen和操作系统验证文件或者设备是否存在并初始化FILE。
+- 根据需要对文件进行读写操作。
+- 最后调用fclose函数关闭流。关闭一个流可以防止与它相关的文件被再次访问，保证任何存储于缓冲区中的数据被正确写入到文件中，并且释放FILE结构。
+
+标准I/O更为简单，因为它们并不需要打开或者关闭。
+
+I/O函数以三种基本的形式处理数据：**单个字符**、**文本行**和**二进制数据**。对于每种形式都有一组特定的函数对它们进行处理。
+
+**输入/输出函数家族**
+
+| 家族名  | 目的       | 可用于所有流 | 只用于stdin和stdout |
+| ------- | ---------- | ------------ | ------------------- |
+| getchar | 字符输入   | fgetc、getc  | getchar             |
+| putchar | 字符输出   | fputc、putc  | putchar             |
+| gets    | 文本行输入 | fgets        | gets                |
+| puts    | 文本行输出 | fputs        | puts                |
+| scanf   | 格式化输入 | fscanf       | scanf               |
+| printf  | 格式化输出 | fprintf      | printf              |
+
+### 7.2 文件打开关闭
+
+文件的打开操作表示将给用户指定的文件在内存分配一个FILE结构区，并将该结构的指针返回给用户程序，以后用户程序就可用此FILE指针来实现对指定文件的存取操作了。当使用打开函数时，必须给出文件名、文件操作方式(读、写或读写)。
+
+```c
+FILE * fopen(const char * filename, const char * mode);
+功能：打开文件
+参数：
+	filename：需要打开的文件名，根据需要加上路径
+	mode：打开文件的权限设置
+返回值：
+	成功：文件指针
+	失败：NULL
+```
+
+| 方式  | 含义                                                         |
+| ----- | ------------------------------------------------------------ |
+| “r”   | 打开，只读，文件必须已经存在。                               |
+| “w”   | 只写,如果文件不存在则创建,如果文件已存在则把文件长度截断(Truncate)为0字节。再重新写,也就是替换掉原来的文件内容文件指针指到头。 |
+| “a”   | 只能在文件末尾追加数据,如果文件不存在则创建                  |
+| “rb”  | 打开一个二进制文件，只读                                     |
+| “wb”  | 打开一个二进制文件，只写                                     |
+| “ab"  | 打开一个二进制文件，追加                                     |
+| “r+”  | 允许读和写,文件必须已存在                                    |
+| “w+”  | 允许读和写,如果文件不存在则创建,如果文件已存在则把文件长度截断为0字节再重新写 。 |
+| “a+”  | 允许读和追加数据,如果文件不存在则创建                        |
+| “rb+” | 以读/写方式打开一个二进制文件                                |
+| “wb+” | 以读/写方式建立一个新的二进制文件                            |
+| “ab+” | 以读/写方式打开一个二进制文件进行追加                        |
+
+```c
+void test(){
+	FILE *fp = NULL;
+
+	// "\\"这样的路径形式，只能在windows使用
+	// "/"这样的路径形式，windows和linux平台下都可用，建议使用这种
+	// 路径可以是相对路径，也可是绝对路径
+	fp = fopen("../test", "w");
+	//fp = fopen("..\\test", "w");
+
+	if (fp == NULL) //返回空，说明打开失败
+	{
+		//perror()是标准出错打印函数，能打印调用库函数出错原因
+		perror("open");
+		return -1;
+	}
+}
+```
+
+**注意**：应该检查fopen的返回值!如何函数失败，它会返回一个NULL值。如果程序不检查错误，这个NULL指针就会传给后续的I/O函数。它们将对这个指针执行间接访问，并将失败.
+
+```c
+int fclose(FILE * stream);
+功能：关闭先前fopen()打开的文件。此动作让缓冲区的数据写入文件中，并释放系统所提供的文件资源。
+参数：
+	stream：文件指针
+返回值：
+	成功：0
+	失败：-1
+```
+
+它表示该函数将关闭FILE指针对应的文件，并返回一个整数值。若成功地关闭了文件，则返回一个0值，否则返回一个非0值.
+
+**文件读写函数回顾**
+
+- 按照字符读写文件：fgetc(), fputc()
+- 按照行读写文件：fputs(), fgets()
+- 按照块读写文件：fread(), fwirte()
+- 按照格式化读写文件：fprintf(), fscanf()
+- 按照随机位置读写文件：fseek(), ftell(), rewind()	
+
+**块读写函数回顾**
+
+```c
+size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
+功能：以数据块的方式给文件写入内容
+参数：
+	ptr：准备写入文件数据的地址
+	size： size_t 为 unsigned int类型，此参数指定写入文件内容的块数据大小
+	nmemb：写入文件的块数，写入文件数据总大小为：size * nmemb
+	stream：已经打开的文件指针
+返回值：
+	成功：实际成功写入文件数据的块数，此值和nmemb相等
+	失败：0
+
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+功能：以数据块的方式从文件中读取内容
+参数：
+	ptr：存放读取出来数据的内存空间
+	size： size_t 为 unsigned int类型，此参数指定读取文件内容的块数据大小
+	nmemb：读取文件的块数，读取文件数据总大小为：size * nmemb
+	stream：已经打开的文件指针
+返回值：
+	成功：实际成功读取到内容的块数，如果此值比nmemb小，但大于0，说明读到文件的结尾。
+	失败：0
+```
+
+**格式化读写函数回顾**
+
+```c
+int fprintf(FILE * stream, const char * format, ...);
+功能：根据参数format字符串来转换并格式化数据，然后将结果输出到stream指定的文件中，指定出现字符串结束符 '\0'  为止。
+参数：
+	stream：已经打开的文件
+	format：字符串格式，用法和printf()一样
+返回值：
+	成功：实际写入文件的字符个数
+	失败：-1
+
+int fscanf(FILE * stream, const char * format, ...);
+功能：从stream指定的文件读取字符串，并根据参数format字符串来转换并格式化数据。
+参数：
+	stream：已经打开的文件
+	format：字符串格式，用法和scanf()一样
+返回值：
+	成功：实际从文件中读取的字符个数
+	失败： - 1
+```
+
+**注意**：**fscanf遇到空格和换行时结束。**
+
+### 7.3 读写配置文件
+
+<img src="image/文件读写案例.png">
+
+```c
+struct info{
+	char key[64];
+	char val[128];
+};
+
+struct config{
+	FILE *fp; //保存文件指针
+	struct info *list; //保存配置信息
+	int lines; //配置信息条数
+};
+
+//加载配置文件
+int load_file(char *path, struct config **myconfig){
+	if (NULL == path){
+		return -1;
+	}
+	//以读写的方式打开文件
+	FILE *fp = fopen(path, "r+");
+	if (NULL ==fp){
+		printf("文件打开失败!\n");
+		return -2;
+	}
+	//配置文件信息分配内存
+	struct config *conf = (struct config *)malloc(sizeof(struct config));
+	conf->fp = fp;
+	conf->list = NULL;
+
+	//指针的间接赋值
+	*myconfig = conf;
+
+	return 0;
+}
+
+//统计文件行数
+int count_file(struct config *config){
+	if (NULL == config){
+		return -1;
+	}
+	char buf[1024] = { 0 };
+	int lines = 0;
+	while (fgets(buf, 1024, config->fp)){
+		//如果是注释则不统计
+		if (buf[0] == '#'){ continue; }
+		lines++;
+	}
+	//将文件指针重置到开始位置
+	fseek(config->fp,0, SEEK_SET);
+
+	return lines;
+}
+
+//解析配置文件
+int parse_file(struct config *config){
+	if (NULL == config){
+		return -1;
+	}
+	//获得配置文件行数
+	config->lines = count_file(config);
+	//给每一行配置信息分配内存
+	config->list = (struct info *)malloc(sizeof(struct info) * config->lines);
+	int index = 0;
+	char buf[1024] = { 0 };
+	while (fgets(buf, 1024, config->fp)){
+		//去除每一行最后的\n字符
+		buf[strlen(buf) - 1] = '\0';
+		//如果是注释则不显示
+		if (buf[0] == '#'){
+			continue;
+		}
+		memset(config->list[index].key, 0, 64);
+		memset(config->list[index].val, 0, 128);
+	
+		char *delimit = strchr(buf, ':');
+		strncpy(config->list[index].key, buf, delimit - buf);
+		strncpy(config->list[index].val, delimit + 1, strlen(delimit + 1));
+		memset(buf, 0 , 1024);
+		index++;
+	}
+	return 0;
+}
+
+const char *get_file(struct config *config, char *key){
+	if (NULL == config){
+		return NULL;
+	}
+	if (NULL == key){
+		return NULL;
+	}
+	
+	for (int i = 0; i < config->lines;i ++){
+		if (strcmp(config->list[i].key,key) == 0){
+			return config->list[i].val;
+		}
+	}
+	return NULL;
+}
+
+void destroy_file(struct config *config){
+	if (NULL == config){
+		return;
+	}
+	//关闭文件指针
+	fclose(config->fp);
+	config->fp = NULL;
+	//释放配置信息
+	free(config->list);
+	config->list = NULL;
+	free(config);
+}
+
+void test(){
+	char *path = "./my.ini";
+	struct config *conf = NULL;
+	load_file(path, &conf);
+	parse_file(conf);
+	printf("%s\n", get_file(conf, "username"));
+	printf("%s\n", get_file(conf, "password"));
+	printf("%s\n", get_file(conf, "server_ip"));
+	printf("%s\n", get_file(conf, "server_port"));
+	printf("%s\n", get_file(conf, "aaaa"));
+	destroy_file(conf);
+}
+```
+
+## 八、链表
+
+### 8.1 链表基本概念
+
+<img src="image/链表.png">
+
+- 链表是一种常用的数据结构，它通过指针将一些列数据结点，连接成一个数据链。相对于数组，链表具有更好的动态性（**非顺序存储**）。
+- 数据域用来存储数据，指针域用于建立与下一个结点的联系。
+- 建立链表时无需预先知道数据总量的，可以随机的分配空间，可以高效的在链表中的任意位置实时插入或删除数据。
+- **链表的开销，主要是访问顺序性和组织链的空间损失**。
+
+**数组和链表的区别**：
+
+- 数组：一次性分配一块连续的存储区域。
+
+  优点：随机访问元素效率高
+
+  缺点：
+
+  - 需要分配一块连续的存储区域（很大区域，有可能分配失败）
+  - 删除和插入某个元素效率低
+
+- 链表：无需一次性分配一块连续的存储区域，只需分配n块节点存储区域，通过指针建立关系。
+
+  优点：
+
+  - 不需要一块连续的存储区域
+  - 删除和插入某个元素效率高
+
+  缺点：随机访问元素效率低
+
+#### 8.1.1 有关结构体的自身引用
+
+问题1：请问结构体可以嵌套本类型的结构体变量吗？
+
+问题2：请问结构体可以嵌套本类型的结构体指针变量吗？
+
+```c
+typedef struct _STUDENT{
+	char name[64];
+	int age;
+}Student;
+
+typedef struct _TEACHER{
+	char name[64];
+	Student stu; //结构体可以嵌套其他类型的结构体
+	//Teacher stu;
+	//struct _TEACHER teacher; //此时Teacher类型的成员还没有确定，编译器无法分配内存
+	struct _TEACHER* teacher; //不论什么类型的指针，都只占4个字节，编译器可确定内存分配
+}Teacher;
+```
+
+- 结构体可以嵌套另外一个结构体的任何类型变量;
+- **结构体嵌套本结构体普通变量（不可以）**。本结构体的类型大小无法确定，类型本质：固定大小内存块别名;
+- **结构体嵌套本结构体指针变量（可以）**, 指针变量的空间能确定，32位， 4字节， 64位， 8字节;
+
+#### 8.1.2 **链表节点**
+
+大家思考一下，我们说链表是由一系列的节点组成，那么如何表示一个包含了数据域和指针域的节点呢？
+
+**链表的节点类型实际上是结构体变量，此结构体包含数据域和指针域**：
+
+- 数据域用来存储数据；
+
+- 指针域用于建立与下一个结点的联系，**当此节点为尾节点时，指针域的值为NULL**；
+
+```c
+typedef struct Node 
+{
+	//数据域
+	int id;
+	char name[50];
+
+	//指针域
+	struct Node *next;       
+}Node;
+```
+
+<img src="image/链表-01.png">
+
+#### 8.1.3 链表的分类
+
+链表分为：
+
+- 静态链表
+- 动态链表
+
+静态链表和动态链表是线性表链式存储结构的两种不同的表示方式：
+
+- 所有结点都是在程序中定义的，不是临时开辟的，也不能用完后释放，这种链表称为“静态链表”。
+
+- 所谓动态链表，是指在程序执行过程中从无到有地建立起一个链表，即一个一个地开辟结点和输入各结点数据，并建立起前后相链的关系。
+
+**静态链表**
+
+```c
+typedef struct Stu {
+	int id;	//数据域
+	char name[100];
+
+	struct Stu *next; //指针域
+}Stu;
+
+void test() {
+	//初始化三个结构体变量
+	Stu s1 = { 1, "yuri", NULL };
+	Stu s2 = { 2, "lily", NULL };
+	Stu s3 = { 3, "lilei", NULL };
+
+	s1.next = &s2; //s1的next指针指向s2
+	s2.next = &s3;
+	s3.next = NULL; //尾结点
+
+	Stu *p = &s1;
+	while (p != NULL) {
+		printf("id = %d, name = %s\n", p->id, p->name);
+		//结点往后移动一位
+		p = p->next; 
+	}
+}
+```
+
+**动态链表**
+
+```c
+typedef struct Stu {
+	int id;	//数据域
+	char name[100];
+
+	struct Stu *next; //指针域
+}Stu;
+
+void test() {
+	//动态分配3个节点
+	Stu *s1 = (Stu *)malloc(sizeof(Stu));
+	s1->id = 1;
+	strcpy(s1->name, "yuri");
+
+	Stu *s2 = (Stu *)malloc(sizeof(Stu));
+	s2->id = 2;
+	strcpy(s2->name, "lily");
+
+	Stu *s3 = (Stu *)malloc(sizeof(Stu));
+	s3->id = 3;
+	strcpy(s3->name, "lilei");
+
+	//建立节点的关系
+	s1->next = s2; //s1的next指针指向s2
+	s2->next = s3;
+	s3->next = NULL; //尾结点
+
+	//遍历节点
+	Stu *p = s1;
+	while (p != NULL){
+		printf("id = %d, name = %s\n", p->id, p->name);
+		//结点往后移动一位
+		p = p->next; 
+	}
+
+	//释放节点空间
+	p = s1;
+	Stu *tmp = NULL;
+	while (p != NULL)
+	{
+		tmp = p;
+		p = p->next;
+
+		free(tmp);
+		tmp = NULL;
+	}
+}
+```
+
+**带头和不带头链表**
+
+- 带头链表：固定一个节点作为头结点(数据域不保存有效数据)，起一个标志位的作用，以后不管链表节点如何改变，此头结点固定不变。
+
+<img src="image/链表-02.png">
+
+- 不带头链表：头结点不固定，根据实际需要变换头结点(如在原来头结点前插入新节点，然后，新节点重新作为链表的头结点)。
+
+<img src="image/链表-03.png">
+
+**单向链表、双向链表、循环链表**
+
+- 单向链表：
+
+<img src="image/链表-04.png">
+
+- 双向链表：
+
+<img src="image/链表-05.png">
+
+- 循环链表：
+
+<img src="image/链表-06.png">
+
+### 8.2 链表基本操作
+
+#### 8.2.1 **创建链表**
+
+使用结构体定义节点类型：
+
+```c
+typedef struct _LINKNODE
+{
+	int id; //数据域
+	struct _LINKNODE *next; //指针域
+}link_node;
+```
+
+编写函数：`link_node* init_linklist()`
+
+建立带有头结点的单向链表，循环创建结点，结点数据域中的数值从键盘输入，以 -1 作为输入结束标志，链表的头结点地址由函数值返回.
+
+```c
+typedef struct _LINKNODE{
+	int data;
+	struct _LINKNODE *next;
+}link_node;
+
+link_node *init_linklist(){
+	//创建头结点指针
+	link_node* head = NULL;
+	//给头结点分配内存
+	head = (link_node*)malloc(sizeof(link_node));
+	if (head == NULL){
+		return NULL;
+	}
+	head->data = -1;
+	head->next = NULL;
+
+	//保存当前节点
+	link_node* p_current = head;
+	int data = -1;
+	//循环向链表中插入节点
+	while (1){
+		printf("please input data:\n");
+		scanf("%d",&data);
+
+		//如果输入-1，则退出循环
+		if (data == -1){
+			break;
+		}
+		//给新节点分配内存
+		link_node* newnode = (link_node*)malloc(sizeof(link_node));
+		if (newnode == NULL){
+			break;
+		}
+		//给节点赋值
+		newnode->data = data;
+		newnode->next = NULL;
+		//新节点入链表，也就是将节点插入到最后一个节点的下一个位置
+		p_current->next = newnode;
+		//更新辅助指针p_current
+		p_current = newnode;
+	}
+	return head;
+}
+```
+
+#### 8.2.2 遍历链表
+
+编写函数：`void foreach_linklist(link_node* head)`
+
+顺序输出单向链表各项结点数据域中的内容：
+
+```c
+//遍历链表
+void foreach_linklist(link_node* head){
+	if (head == NULL){
+		return;
+	}
+	//赋值指针变量
+	link_node* p_current = head->next;
+	while (p_current != NULL){
+		printf("%d ",p_current->data);
+		p_current = p_current->next;
+	}
+	printf("\n");
+}
+```
+
+#### 8.2.3 **插入节点**
+
+编写函数: `void insert_linklist(link_node* head,int val,int data).`
+
+在指定值后面插入数据data,如果值val不存在，则在尾部插入。
+
+```c
+//在值val前插入节点
+void insert_linklist(link_node* head, int val, int data){
+	if (head == NULL){
+		return;
+	}
+	//两个辅助指针
+	link_node* p_prev = head;
+	link_node* p_current = p_prev->next;
+	while (p_current != NULL){
+		if (p_current->data == val){
+			break;
+		}
+		p_prev = p_current;
+		p_current = p_prev->next;
+	}
+	//如果p_current为NULL，说明不存在值为val的节点
+	if (p_current == NULL){
+		printf("不存在值为%d的节点!\n",val);
+		return;
+	}
+	//创建新的节点
+	link_node* newnode = (link_node*)malloc(sizeof(link_node));
+	newnode->data = data;
+	newnode->next = NULL;
+
+	//新节点入链表
+	newnode->next = p_current;
+	p_prev->next = newnode;
+}
+```
+
+#### 8.2.4 **删除节点**
+
+编写函数: `void remove_linklist(link_node* head,int val)`
+
+删除第一个值为val的结点.
+
+```c
+//删除值为val的节点
+void remove_linklist(link_node* head,int val){
+	if (head == NULL){
+		return;
+	}
+
+	//辅助指针
+	link_node* p_prev = head;
+	link_node* p_current = p_prev->next;
+
+	//查找值为val的节点
+	while (p_current != NULL){
+		if (p_current->data == val){
+			break;
+		}
+		p_prev = p_current;
+		p_current = p_prev->next;
+	}
+	//如果p_current为NULL，表示没有找到
+	if (p_current == NULL){
+		return;
+	}
+	
+	//删除当前节点： 重新建立待删除节点(p_current)的前驱后继节点关系
+	p_prev->next = p_current->next;
+	//释放待删除节点的内存
+	free(p_current);
+}
+```
+
+#### 8.2.5 **销毁链表**
+
+编写函数: `void destroy_linklist(link_node* head)`
+
+销毁链表，释放所有节点的空间.
+
+```c
+//销毁链表
+void destroy_linklist(link_node* head){
+	if (head == NULL){
+		return;
+	}
+	//赋值指针
+	link_node* p_current = head;
+	while (p_current != NULL){
+		//缓存当前节点下一个节点
+		link_node* p_next = p_current->next;
+		free(p_current);
+		p_current = p_next;
+	}
+}
+```
 
 
 
@@ -907,3 +2249,85 @@ printf("&arr type is %s\n", typeid(&arr).name()); //int(*)[10]而不是int*
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 建立ARM交叉编译环境arm-none-linux-gnueabi-gcc
+
+$ls $PREFIX/bin
+
+arm-none-linux-gnueabi-addr2line 
+
+arm-none-linux-gnueabi-as   
+
+arm-none-linux-gnueabi-gprof 
+
+arm-none-linux-gnueabi-nm      
+
+arm-none-linux-gnueabi-objdump 
+
+arm-none-linux-gnueabi-readelf 
+
+arm-none-linux-gnueabi-strings arm-none-linux-gnueabi-ar 
+
+arm-none-linux-gnueabi-c++filt 
+
+arm-none-linux-gnueabi-ld 
+
+arm-none-linux-gnueabi-objcopy 
+
+arm-none-linux-gnueabi-ranlib  
+
+arm-none-linux-gnueabi-size    
+
+arm-none-linux-gnueabi-strip
+
+功能分别是：
+
+add2line         ：将你要找的地址转成文件和行号，它要使用 debug 信息。
+
+ar                   ：产生、修改和解开一个存档文件
+
+as                  ：gnu的汇编器
+
+c++filt            ：C++ 和 java 中有一种重载函数，所用的重载函数最后会被编译转化成汇编的标，c++filt 就是实现这种反向的转化，根据标号得到函数名
+
+gprof              ：gnu 汇编器预编译器
+
+ld                   ：gnu 的连接器
+
+nm                 ：列出目标文件的符号和对应的地址
+
+objcopy           ：将某种格式的目标文件转化成另外格式的目标文件
+
+objdump          ：显示目标文件的信息
+
+ranlib              ：为一个存档文件产生一个索引，并将这个索引存入存档文件中
+
+readelf            ：显示 elf 格式的目标文件的信息
+
+size                ：显示目标文件各个节的大小和目标文件的大小
+
+strings            ：打印出目标文件中可以打印的字符串，有个默认的长度，为4
+
+strip                ：剥掉目标文件的所有的符号信息
