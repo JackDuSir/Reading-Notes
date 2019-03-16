@@ -2234,23 +2234,158 @@ void destroy_linklist(link_node* head){
 }
 ```
 
+## 九、函数指针
+
+### 9.1 函数类型
+
+通过什么来区分两个不同的函数？
+
+一个函数在编译时被分配一个入口地址，这个地址就称为函数的指针，**函数名代表函数的入口地址**。
+
+函数三要素： 名称、参数、返回值。C语言中的函数有自己特定的类型。
+
+c 语言中通过 typedef 为函数类型重命名：
+
+```c
+typedef int f(int, int);	// f 为函数类型
+typedef void p(int);		// p 为函数类型
+```
+
+这一点和数组一样，因此我们可以用一个指针变量来存放这个入口地址，然后通过该指针变量调用函数。
+
+**注意：**通过函数类型定义的变量是不能够直接执行，因为没有函数体。只能通过类型定义一个函数指针指向某一个具体函数，才能调用。
+
+```c
+typedef int(p)(int, int);
+
+void my_func(int a,int b){
+	printf("%d %d\n",a,b);
+}
+
+void test(){
+	p p1;
+	//p1(10,20); //错误，不能直接调用，只描述了函数类型，但是并没有定义函数体，没有函数体无法调用
+	p* p2 = my_func;
+	p2(10,20); //正确，指向有函数体的函数入口地址
+}
+```
+
+### 9.2 函数指针(指向函数的指针)
+
+- 函数指针定义方式(先定义函数类型，根据类型定义指针变量);
+- 先定义函数指针类型，根据类型定义指针变量;
+- 直接定义函数指针变量;
+
+```c
+int my_func(int a,int b){
+	printf("ret:%d\n", a + b);
+	return 0;
+}
+
+//1. 先定义函数类型，通过类型定义指针
+void test01(){
+	typedef int(FUNC_TYPE)(int, int);
+	FUNC_TYPE* f = my_func;
+	//如何调用？
+	(*f)(10, 20);
+	f(10, 20);
+}
+
+//2. 定义函数指针类型
+void test02(){
+	typedef int(*FUNC_POINTER)(int, int);
+	FUNC_POINTER f = my_func;
+	//如何调用？
+	(*f)(10, 20);
+	f(10, 20);
+}
 
+//3. 直接定义函数指针变量
+void test03(){
+	int(*f)(int, int) = my_func;
+	//如何调用？
+	(*f)(10, 20);
+	f(10, 20);
+}
+```
 
+### 9.3 **函数指针数组**
 
+函数指针数组，每个元素都是函数指针。
 
+```c
+void func01(int a){
+	printf("func01:%d\n",a);
+}
+void func02(int a){
+	printf("func02:%d\n", a);
+}
+void func03(int a){
+	printf("func03:%d\n", a);
+}
 
+void test(){
+#if 0
+	//定义函数指针
+	void(*func_array[])(int) = { func01, func02, func03 };
+#else
+	void(*func_array[3])(int);
+	func_array[0] = func01;
+	func_array[1] = func02;
+	func_array[2] = func03;
+#endif
 
+	for (int i = 0; i < 3; i ++){
+		func_array[i](10 + i);
+		(*func_array[i])(10 + i);
+	}
+}
+```
 
+### 9.4 **函数指针做函数参数(回调函数)**
 
+函数参数除了是普通变量，还可以是函数指针变量。
 
+```c
+//形参为普通变量
+void fun( int x ){}
+//形参为函数指针变量
+void fun( int(*p)(int a) ){}
+```
 
+函数指针变量常见的用途之一是把指针作为参数传递到其他函数，指向函数的指针也可以作为参数，以实现函数地址的传递。
 
+```c
+//加法计算器
+int plus(int a,int b){
+	return a + b;
+}
 
+//减法计算器
+int minus(int a,int b){
+	return a - b;
+}
 
+//计算器
+#if 0
+int caculator(int a,int b,int(*func)(int,int)){
+	return func(a, b);
+}
+#else
+typedef int(*FUNC_POINTER)(int, int);
+int caculator(int a, int b, FUNC_POINTER func){
+	return func(a, b);
+}
+#endif
+```
 
+**注意：**函数指针和指针函数的区别：
 
+- 函数指针是指向函数的指针；
 
+- 指针函数是返回类型为指针的函数；
 
+## 十、预处理
 
 
 
@@ -2272,62 +2407,9 @@ void destroy_linklist(link_node* head){
 
 
 
-# 建立ARM交叉编译环境arm-none-linux-gnueabi-gcc
 
-$ls $PREFIX/bin
 
-arm-none-linux-gnueabi-addr2line 
 
-arm-none-linux-gnueabi-as   
 
-arm-none-linux-gnueabi-gprof 
 
-arm-none-linux-gnueabi-nm      
 
-arm-none-linux-gnueabi-objdump 
-
-arm-none-linux-gnueabi-readelf 
-
-arm-none-linux-gnueabi-strings arm-none-linux-gnueabi-ar 
-
-arm-none-linux-gnueabi-c++filt 
-
-arm-none-linux-gnueabi-ld 
-
-arm-none-linux-gnueabi-objcopy 
-
-arm-none-linux-gnueabi-ranlib  
-
-arm-none-linux-gnueabi-size    
-
-arm-none-linux-gnueabi-strip
-
-功能分别是：
-
-add2line         ：将你要找的地址转成文件和行号，它要使用 debug 信息。
-
-ar                   ：产生、修改和解开一个存档文件
-
-as                  ：gnu的汇编器
-
-c++filt            ：C++ 和 java 中有一种重载函数，所用的重载函数最后会被编译转化成汇编的标，c++filt 就是实现这种反向的转化，根据标号得到函数名
-
-gprof              ：gnu 汇编器预编译器
-
-ld                   ：gnu 的连接器
-
-nm                 ：列出目标文件的符号和对应的地址
-
-objcopy           ：将某种格式的目标文件转化成另外格式的目标文件
-
-objdump          ：显示目标文件的信息
-
-ranlib              ：为一个存档文件产生一个索引，并将这个索引存入存档文件中
-
-readelf            ：显示 elf 格式的目标文件的信息
-
-size                ：显示目标文件各个节的大小和目标文件的大小
-
-strings            ：打印出目标文件中可以打印的字符串，有个默认的长度，为4
-
-strip                ：剥掉目标文件的所有的符号信息
