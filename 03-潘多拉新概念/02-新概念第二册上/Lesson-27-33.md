@@ -20,11 +20,11 @@
 
 <img src="lesson/Lesson-31.png">
 
-## Lesson 32 - 
+## Lesson 32 - Diamond & Garden
 
 <img src="lesson/Lesson-32.png">
 
-## Lesson 33 -
+## Lesson 33 - Do you speak English
 
 <img src="lesson/Lesson-33.png">
 
