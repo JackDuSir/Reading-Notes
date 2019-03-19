@@ -1,0 +1,23 @@
+﻿生成启动时间为 2017/4/6 14:28:27。
+     1>项目“E:\传智博客就业班\c提高09day_数据结构\练习\链表版本二\SERstack\SERstack.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>ClCompile:
+         F:\C语言\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt main.c serstack.c
+         serstack.c
+         main.c
+         正在生成代码...
+         F:\C语言\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt serstack.h
+         serstack.h
+       Link:
+         F:\C语言\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\传智博客就业班\c提高09day_数据结构\练习\链表版本二\SERstack\Debug\SERstack.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\传智博客就业班\c提高09day_数据结构\练习\链表版本二\SERstack\Debug\SERstack.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\传智博客就业班\c提高09day_数据结构\练习\链表版本二\SERstack\Debug\SERstack.lib" /MACHINE:X86 Debug\main.obj
+         Debug\serstack.obj
+         Debug\serstack.obj
+     1>Debug\serstack.obj : warning LNK4042: 对象被多次指定；已忽略多余的指定
+     1>main.obj : error LNK2019: 无法解析的外部符号 _init，该符号在函数 _test01 中被引用
+     1>main.obj : error LNK2019: 无法解析的外部符号 _push，该符号在函数 _test01 中被引用
+     1>main.obj : error LNK2019: 无法解析的外部符号 _show，该符号在函数 _test01 中被引用
+     1>E:\传智博客就业班\c提高09day_数据结构\练习\链表版本二\SERstack\Debug\SERstack.exe : fatal error LNK1120: 3 个无法解析的外部命令
+     1>已完成生成项目“E:\传智博客就业班\c提高09day_数据结构\练习\链表版本二\SERstack\SERstack.vcxproj”(Rebuild 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:02.68
