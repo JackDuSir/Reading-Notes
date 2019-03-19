@@ -38,11 +38,11 @@ void send_CSckImp1(void *handle, unsigned char *sendData, int sendLen)
 
 	struct Info *info = (struct Info*)handle;
 
-	printf("sendData=%s sendLen=%d\n", sendData, sendLen);
+	//printf("sendData=%s sendLen=%d\n", sendData, sendLen);
 	strncpy(info->data, sendData, sendLen);
 	info->len = sendLen;
-	printf("info->data=%d info->len=%d\n", info->data, info->len);
-	printf("%s\n", __FUNCTION__);
+	//printf("info->data=%d info->len=%d\n", info->data, info->len);
+	//printf("%s\n", __FUNCTION__);
 }
 
 // 接收接口
@@ -60,8 +60,8 @@ void recv_CSckImp1(void *handle, unsigned char *recvData, int *recvLen)
 	struct Info *info = (struct Info*)handle;
 	strncpy(recvData, info->data, info->len);
 	*recvLen = info->len;
-	printf("recvData=%s recvLen=%d\n", recvData, recvLen);
-	printf("%s\n", __FUNCTION__);
+	//printf("recvData=%s recvLen=%d\n", recvData, recvLen);
+	//printf("%s\n", __FUNCTION__);
 }
 
 // 关闭接口

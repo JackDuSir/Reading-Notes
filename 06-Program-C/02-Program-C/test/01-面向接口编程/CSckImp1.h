@@ -4,7 +4,7 @@
 	> Mail: miaopei163@163.com 
 	> Created Time: 2019年03月19日 星期二 14时36分12秒
  ************************************************************************/
-
+#define _CRT_SECURE_NO_WARNINGS
 #pragma once
 
 #include<stdio.h>

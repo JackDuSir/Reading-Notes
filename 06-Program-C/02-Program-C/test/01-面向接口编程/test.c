@@ -4,6 +4,7 @@
 	> Mail: miaopei163@163.com 
 	> Created Time: 2019年03月19日 星期二 14时22分33秒
  ************************************************************************/
+#define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -37,7 +38,7 @@ void FrameWork(
 	// 接收数据
 	char recvBuf[1024] = { 0 };
 	int recvLen = 0;
-	recv(handle, recvBuf, &recvBuf);
+	recv(handle, recvBuf, &recvLen);
 	printf("接收到的数据：%s\n", recvBuf);
 	printf("接收到的数据长度：%d\n", recvLen);
 
