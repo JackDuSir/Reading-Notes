@@ -59,6 +59,7 @@ void Insert_LinkList(LK list, int position, void *data)
 	pCurrent->next = mynode;
 
 	mylist->size++;
+	printf("%s %d\n", __FUNCTION__, __LINE__);
 }
 
 // 遍历
