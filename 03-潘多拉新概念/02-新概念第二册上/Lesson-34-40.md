@@ -8,7 +8,7 @@
 
 <img src="lesson/Lesson-35.png">
 
-## Lesson 36 - 
+## Lesson 36 - Good News
 
 <img src="lesson/Lesson-36.png">
 
