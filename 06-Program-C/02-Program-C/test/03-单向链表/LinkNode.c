@@ -51,7 +51,8 @@ void Insert_LinkList(LK list, int position, void *data)
 
 	// 找位置（找到position位置的前一个位置）
 	LinkNode *pCurrent = &(mylist->handle);
-	for (int i = 0; i < position; i++)
+	int i = 0;
+	for (i; i < position; i++)
 		pCurrent = pCurrent->next;
 
 	// 数据入链表
@@ -59,7 +60,7 @@ void Insert_LinkList(LK list, int position, void *data)
 	pCurrent->next = mynode;
 
 	mylist->size++;
-	printf("%s %d\n", __FUNCTION__, __LINE__);
+	//printf("%s %d\n", __FUNCTION__, __LINE__);
 }
 
 // 遍历
@@ -70,11 +71,12 @@ void Foreach_LinkList(LK list, void(*myforeach)(void *))
 
 	LinkList *mylist = (LinkList *)list;
 	LinkNode *pCurrent = mylist->handle.next;  // ?
-	while(!pCurrent)
+	while(pCurrent)
 	{
 		myforeach(pCurrent);
 		pCurrent = pCurrent->next;
 	}
+	//printf("%s %d\n", __FUNCTION__, __LINE__);
 }
 
 // 删除节点
@@ -89,7 +91,8 @@ void RemoveByPos_LinkList(LK list, int position)
 
 	// 辅助指针
 	LinkNode *pCurrent = &(mylist->handle);
-	for (int i = 0; i < position; i++)
+	int i = 0;
+	for (i; i < position; i++)
 		pCurrent = pCurrent->next;
 
 	// 缓存下待删除节点
@@ -118,7 +121,7 @@ typedef struct _Person
 	int age;
 } Person;
 
-void Print(void *data)
+void myPrint(void *data)
 {
 	Person *person = (Person *)data;
 	printf("Name=%s Age=%d\n", person->name, person->age);
@@ -144,14 +147,14 @@ void test()
 	Insert_LinkList(list, 0, &p5);
 
 	// 遍历
-	Foreach_LinkList(list, Print);
+	Foreach_LinkList(list, myPrint);
 
 	// 删除
-	RemoveByPos_LinkList(list, 3);
+	RemoveByPos_LinkList(list, 1);
 	printf("---------------------------------\n");
 
 	// 遍历
-	Foreach_LinkList(list, Print);
+	Foreach_LinkList(list, myPrint);
 
 	// 销毁
 	Destroy_LinkList(list);

@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+//#define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
@@ -61,8 +61,9 @@ void Insert_LinkList(LinkList list, int position, void *data)
 
 
 	//找位置(找到position位置的前一个位置)
+	int i = 0;
 	struct LinkNode *pCurrent = &(mylist->header); 
-	for (int i = 0; i < position; ++i)
+	for (i; i < position; ++i)
 	{
 		pCurrent = pCurrent->next;
 	}
@@ -119,8 +120,9 @@ void RemoveByPos_LinkList(LinkList list, int position)
 	}
 
 	//辅助指针
+	int i = 0;
 	struct LinkNode *pCurrent = &(mylist->header);
-	for (int i = 0; i < position; ++i)
+	for (i; i < position; ++i)
 	{
 		pCurrent = pCurrent->next;
 	}
