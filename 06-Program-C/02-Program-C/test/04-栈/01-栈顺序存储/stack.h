@@ -31,7 +31,7 @@ Stack Init_SeqStack();
 void Push_SeqStack(Stack stack, void *data);
 
 // 出栈
-void Pop_SeqStack(stack stack);
+void Pop_SeqStack(Stack stack);
 
 // 获得栈顶元素
 void *Top_SeqStack(Stack stack);
