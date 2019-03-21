@@ -9,16 +9,17 @@
 #include<stdlib.h>
 #include<string.h>
 
-// 链表节点数据结构
-typedef struct _LinkNode
+// 节点指针域定义
+typedef struct _LinkNode LinkNode;
+struct _LinkNode
 {
-	struct _LinkNode *next;
-} LinkNode;
+	LinkNode *next;
+};
 
-// 链表结构体
+// 头节点定义
 typedef struct _LinkList
 {
-	LinkNode handle;	// 头结点
+	LinkNode head;	// 头结点
 	int size;
 } LinkList;
 
@@ -31,7 +32,7 @@ LK init_LinkList()
 	if (NULL == list)
 		return NULL;
 
-	list->handle.next = NULL;
+	list->head.next = NULL;
 	list->size = 0;
 	
 	return list;
@@ -50,7 +51,7 @@ void Insert_LinkList(LK list, int position, void *data)
 		position = mylist->size;
 
 	// 找位置（找到position位置的前一个位置）
-	LinkNode *pCurrent = &(mylist->handle);
+	LinkNode *pCurrent = &(mylist->head);
 	int i = 0;
 	for (i; i < position; i++)
 		pCurrent = pCurrent->next;
@@ -70,7 +71,7 @@ void Foreach_LinkList(LK list, void(*myforeach)(void *))
 		return;
 
 	LinkList *mylist = (LinkList *)list;
-	LinkNode *pCurrent = mylist->handle.next;  // ?
+	LinkNode *pCurrent = mylist->head.next;  // ?
 	while(pCurrent)
 	{
 		myforeach(pCurrent);
@@ -90,7 +91,7 @@ void RemoveByPos_LinkList(LK list, int position)
 		return;
 
 	// 辅助指针
-	LinkNode *pCurrent = &(mylist->handle);
+	LinkNode *pCurrent = &(mylist->head);
 	int i = 0;
 	for (i; i < position; i++)
 		pCurrent = pCurrent->next;
