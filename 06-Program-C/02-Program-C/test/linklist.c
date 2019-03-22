@@ -161,6 +161,28 @@ void destroy_linklist(link_node *head)
 	}
 }
 
+void Clear_linklist(link_node *head)
+{
+	if (NULL == head)
+		return;
+
+	// 辅助指针变量
+	link_node *p_current = head->next;
+	
+	while(p_current != NULL)
+	{
+		// 先保存当前节点的下一个节点地址
+		link_node *pNext = p_current->next;
+
+		// 释放当前节点内存
+		free(p_current);
+
+		// p_current 指向下一个节点
+		p_current = pNext;
+	}
+	head->next = NULL;
+}
+
 void operation_linklist(link_node *head)
 {
 	if (head == NULL)

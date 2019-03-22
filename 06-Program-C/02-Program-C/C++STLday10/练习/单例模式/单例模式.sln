@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "单例模式", "单例模式\单例模式.vcxproj", "{FB8BBDF3-0EC6-4681-9B9D-F5B6FA2BD5F6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "评委打分", "评委打分\评委打分.vcxproj", "{2F2D078B-0478-4345-8A78-46A934CC4A72}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "求面积", "求面积\求面积.vcxproj", "{3DEF687B-3538-4F30-9C0F-59AE4BFB91A3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "评委打分实现", "评委打分实现\评委打分实现.vcxproj", "{861EF2C4-CA78-4C40-9155-2C81E591CD86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB8BBDF3-0EC6-4681-9B9D-F5B6FA2BD5F6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FB8BBDF3-0EC6-4681-9B9D-F5B6FA2BD5F6}.Debug|Win32.Build.0 = Debug|Win32
+		{FB8BBDF3-0EC6-4681-9B9D-F5B6FA2BD5F6}.Release|Win32.ActiveCfg = Release|Win32
+		{FB8BBDF3-0EC6-4681-9B9D-F5B6FA2BD5F6}.Release|Win32.Build.0 = Release|Win32
+		{2F2D078B-0478-4345-8A78-46A934CC4A72}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2F2D078B-0478-4345-8A78-46A934CC4A72}.Debug|Win32.Build.0 = Debug|Win32
+		{2F2D078B-0478-4345-8A78-46A934CC4A72}.Release|Win32.ActiveCfg = Release|Win32
+		{2F2D078B-0478-4345-8A78-46A934CC4A72}.Release|Win32.Build.0 = Release|Win32
+		{3DEF687B-3538-4F30-9C0F-59AE4BFB91A3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3DEF687B-3538-4F30-9C0F-59AE4BFB91A3}.Debug|Win32.Build.0 = Debug|Win32
+		{3DEF687B-3538-4F30-9C0F-59AE4BFB91A3}.Release|Win32.ActiveCfg = Release|Win32
+		{3DEF687B-3538-4F30-9C0F-59AE4BFB91A3}.Release|Win32.Build.0 = Release|Win32
+		{861EF2C4-CA78-4C40-9155-2C81E591CD86}.Debug|Win32.ActiveCfg = Debug|Win32
+		{861EF2C4-CA78-4C40-9155-2C81E591CD86}.Debug|Win32.Build.0 = Debug|Win32
+		{861EF2C4-CA78-4C40-9155-2C81E591CD86}.Release|Win32.ActiveCfg = Release|Win32
+		{861EF2C4-CA78-4C40-9155-2C81E591CD86}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

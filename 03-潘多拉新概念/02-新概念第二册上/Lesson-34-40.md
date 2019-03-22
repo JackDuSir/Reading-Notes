@@ -16,7 +16,7 @@
 
 <img src="lesson/Lesson-37.png">
 
-## Lesson 38 - 
+## Lesson 38 - A Polite Request
 
 <img src="lesson/Lesson-38.png">
 
