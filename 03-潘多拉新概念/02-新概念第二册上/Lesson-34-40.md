@@ -20,10 +20,10 @@
 
 <img src="lesson/Lesson-38.png">
 
-## Lesson 39 - 
+## Lesson 39 - A Polite Request
 
 <img src="lesson/Lesson-39.png">
 
-## Lesson 40 - 
+## Lesson 40 - Always Young 
 
 <img src="lesson/Lesson-40.png">
