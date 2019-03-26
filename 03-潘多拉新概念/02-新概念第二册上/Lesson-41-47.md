@@ -4,11 +4,11 @@
 
 <img src="lesson/Lesson-41.png">
 
-## Lesson 42 - 
+## Lesson 42 - 复习
 
 <img src="lesson/Lesson-42.png">
 
-## Lesson 43 - 
+## Lesson 43 - He Often Does This
 
 <img src="lesson/Lesson-43.png">
 
