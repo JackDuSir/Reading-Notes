@@ -12,11 +12,11 @@
 
 <img src="lesson/Lesson-43.png">
 
-## Lesson 44 - 
+## Lesson 44 - He Often Does This
 
 <img src="lesson/Lesson-44.png">
 
-## Lesson 45 - 
+## Lesson 45 - Sold Out
 
 <img src="lesson/Lesson-45.png">
 
