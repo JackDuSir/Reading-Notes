@@ -19,7 +19,7 @@ public:
 		cout << "no param contructor!" << endl;
 		mAge = 10;
 	}
-	Person(int age) {
+	Person(int age) 
 		cout << "param contructor!" << endl;
 	}
 	Person(const Person& person) {
@@ -31,7 +31,7 @@ public:
 	}
 public:
 	int mAge;
-};
+}
 
 // 1. 就对象初始化新对象
 void test01()
