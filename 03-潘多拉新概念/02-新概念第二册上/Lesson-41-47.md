@@ -20,7 +20,7 @@
 
 <img src="lesson/Lesson-45.png">
 
-## Lesson 46 - 
+## Lesson 46 - Sold Out
 
 <img src="lesson/Lesson-46.png">
 
