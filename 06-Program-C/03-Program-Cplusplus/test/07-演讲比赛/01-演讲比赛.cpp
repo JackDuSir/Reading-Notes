@@ -60,7 +60,7 @@ void CreateSpeaker(vector<int>& v, map<int, Speaker>& m)
 		}
 		v.push_back(i + 100);	// 编号 100 - 123
 		m.insert(make_pair(i + 100, sp));
-	}	
+	}
 }
 
 int main()
