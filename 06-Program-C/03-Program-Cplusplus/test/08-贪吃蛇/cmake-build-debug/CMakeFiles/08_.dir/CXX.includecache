@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Food.h
+Wall.h
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Wall.h
+
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Game.cpp
+iostream
+-
+ctime
+-
+cstdio
+-
+unistd.h
+-
+Wall.h
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Wall.h
+Snake.h
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Snake.h
+Food.h
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Food.h
+
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Snake.h
+Wall.h
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Wall.h
+Food.h
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Food.h
+
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/08-贪吃蛇/Wall.h
+iostream
+-
+

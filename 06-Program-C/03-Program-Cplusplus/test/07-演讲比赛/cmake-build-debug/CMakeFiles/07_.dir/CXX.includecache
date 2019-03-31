@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/miaopei/workspce/github/DeepLearning/Reading-Notes/06-Program-C/03-Program-Cplusplus/test/07-演讲比赛/SpeakerMatch.cpp
+iostream
+-
+vector
+-
+map
+-
+string
+-
+algorithm
+-
+deque
+-
+numeric
+-
+functional
+-
+ctime
+-
+

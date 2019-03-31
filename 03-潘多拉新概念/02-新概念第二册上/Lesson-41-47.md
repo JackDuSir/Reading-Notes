@@ -24,6 +24,6 @@
 
 <img src="lesson/Lesson-46.png">
 
-## Lesson 47 - 
+## Lesson 47 - One Man In A Boat
 
 <img src="lesson/Lesson-47.png">
