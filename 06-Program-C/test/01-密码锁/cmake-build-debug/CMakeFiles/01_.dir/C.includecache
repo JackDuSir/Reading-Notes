@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/miaopei/workdir/github/DeepLearning/Reading-Notes/06-Program-C/test/01-密码锁/main.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+

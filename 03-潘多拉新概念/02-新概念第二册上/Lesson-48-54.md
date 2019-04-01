@@ -1,6 +1,6 @@
 # 新概念第二册上 Lesson 48 - 54
 
-## Lesson 48 - 
+## Lesson 48 - One Man In A Boat
 
 <img src="lesson/Lesson-48.png">
 
