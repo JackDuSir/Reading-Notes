@@ -639,6 +639,19 @@ clean:
 
 make -f makefile1	指定makefile文件进行编译
 
+```makefile
+SrcFiles=$(wildcard *.c)
+TargetFiles=$(patsubst %.c,%,$(SrcFiles))
+
+all:$(TargetFiles)
+
+%:%.c
+	gcc -o $@ %^
+	
+clean:
+	rm -f $(TargetFiles)
+```
+
 ### 1.7 gdb 调试
 
 > [gdb 调试入门，大牛写的高质量指南](http://blog.jobbole.com/107759/)
