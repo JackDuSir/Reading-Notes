@@ -2,6 +2,121 @@
 
 ## 1. Linux 基础命令
 
+### 1.0 创建用户
+
+**创建用户命令两条**：
+
+- adduser
+
+- useradd
+
+**用户删除命令**：
+
+- userdel
+
+**两个用户创建命令之间的区别**：
+
+- adduser： 会自动为创建的用户指定主目录、系统shell版本，会在创建时输入用户密码。
+
+- useradd：需要使用参数选项指定上述基本设置，如果不使用任何参数，则创建的用户无密码、无主目录、没有指定shell版本。
+
+```shell
+# 使用 adduser
+$ adduser apple
+正在添加用户"apple"...
+正在添加新组"apple" (1007)...
+正在添加新用户"apple" (1007) 到组"apple"...
+创建主目录"/home/apple"...
+正在从"/etc/skel"复制文件...
+输入新的 UNIX 密码： 
+重新输入新的 UNIX 密码： 
+passwd：已成功更新密码
+正在改变 apple 的用户信息
+请输入新值，或直接敲回车键以使用默认值
+        全名 []: 
+        房间号码 []: 
+        工作电话 []: 
+        家庭电话 []: 
+        其它 []: 
+这些信息是否正确？ [Y/n] y
+
+# 这样在创建用户名时，就创建了用户的主目录以及密码。
+
+# 默认情况下：
+# adduser在创建用户时会主动调用  /etc/adduser.conf；
+# 在创建用户主目录时默认在/home下，而且创建为 /home/用户名   
+
+# 如果主目录已经存在，就不再创建，但是此主目录虽然作为新用户的主目录，而且默认登录时会进入这个目录下，但是这个目录并不是属于新用户，当使用userdel删除新用户时，并不会删除这个主目录，因为这个主目录在创建前已经存在且并不属于这个用户。
+
+# 为用户指定shell版本为：/bin/bash
+```
+
+因此 adduser 常用参数选项为：
+
+- `--home`：  指定创建主目录的路径，默认是在/home目录下创建用户名同名的目录，这里可以指定；如果主目录同名目录存在，则不再创建，仅在登录时进入主目录。
+
+-  `--quiet`：  即只打印警告和错误信息，忽略其他信息。
+
+- `--debug`：  定位错误信息。
+
+- `--conf`：   在创建用户时使用指定的configuration文件。
+
+- `--force-badname`：  默认在创建用户时会进行/etc/adduser.conf中的正则表达式检查用户名是否合法，如果想使用弱检查，则使用这个选项，如果不想检查，可以将/etc/adduser.conf中相关选项屏蔽。
+
+```shell
+# 使用 useradd
+# 注意： 在使用useradd命令创建新用户时，不会为用户创建主目录，不会为用户指定shell版本，不会为用户创建密码。
+```
+
+为用户指定参数的 useradd 命令，常用命令行选项：
+
+- `-d`：   指定用户的主目录
+
+- `-m`：   如果存在不再创建，但是此目录并不属于新创建用户；如果主目录不存在，则强制创建； -m和-d一块使用。
+
+- `-s`：   指定用户登录时的shell版本
+
+- `-M`：   不创建主目录
+
+```shell
+# 解释：   
+#  -d   “/home/tt" ：就是指定/home/tt为主目录
+#  -m   就是如果/home/tt不存在就强制创建
+#  -s   就是指定shell版本           
+$ sudo  useradd  -d  "/home/tt"  -m   -s "/bin/bash"   tt
+
+# 修改 tt 密码：
+$ sudo passwd tt
+```
+
+**删除用户命令**
+
+- userdel
+- 只删除用户：
+  - `sudo   userdel   用户名`
+
+- 连同用户主目录一块删除：
+  - `sudo  userdel   -r   用户名`
+
+**相关文件**：
+
+- /etc/passwd - 使 用 者 帐 号 资 讯，可以查看用户信息
+- /etc/shadow - 使 用 者 帐 号 资 讯 加 密
+- /etc/group - 群 组 资 讯
+- /etc/default/useradd - 定 义 资 讯
+- /etc/login.defs - 系 统 广 义 设 定
+- /etc/skel - 内 含 定 义 档 的 目 录
+
+**为组用户增加 root 权限**：
+
+```shell
+# 修改 /etc/sudoers 文件，找到下面一行，在 root 下面添加一行，如下所示：
+## Allow root to run any commands anywhere
+root    ALL=(ALL)     ALL
+tommy   ALL=(ALL)     ALL
+# 修改完毕，现在可以用 tommy 帐号登录，然后用命令 sudo – ，即可获得 root 权限进行操作。
+```
+
 ### 1.1 ln 软硬链接
 
 **硬链接**
@@ -526,21 +641,61 @@ make -f makefile1	指定makefile文件进行编译
 
 ### 1.7 gdb 调试
 
+> [gdb 调试入门，大牛写的高质量指南](http://blog.jobbole.com/107759/)
+>
+> [gdb 调试利器](https://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/gdb.html)
+
+启动gdb：gdb app
+
+在gdb启动程序：
+
+- r(un)   -- 启动  可以带参数启动
+- start   -- 启动 - 停留在main函数，分步调试
+- n(ent)   -- 下一条指令
+- s(tep)  -- 下一条指令，可以进入函数内部，库函数不能进
+- q(uit)   -- 退出 gdb
+- b(reak)  num  -- 指定行号，函数, 文件:行号  设置断点
+  - b 行号  -- 主函数所在文件的行
+  - b 函数名
+  - b 文件名:行号
+- l(ist) 文件：行号   -- 查看代码
+  - l -- 显示主函数对应的文件
+  - l 文件名:行号
+- info b   -- 查看断点信息
+- d(el)  num -- 删除断点
+- c -- continue 跳到下一个断点
+- p(rint) -- 打印参数，或者变量值
+- ptype 变量  -- 查看变量类型
+- set  -- 设置变量的值
+  - set argc=4
+  - set argv[1]=“12”
+  - set argv[2] = “7”
+- display argc  --  跟踪显示参数或者变量的变化
+- info display
+- undisplay num
+- b num if xx == xx  -- 条件断点
+
+**gdb跟踪core**
+
+- 设置生成 core ：ulimit -c unlimited
+
+- 取消生成 core： ulimit -c 0
+
+- 设置 core 文件格式：/proc/sys/kernel/core_pattern
+
+  文件不能 vi，可以用后面的套路：echo “/corefile/core-%e-%p-%t” > core_pattern
+
+core 文件如何使用：
+
+- gdb app core
+
+- 如果看不到在哪儿core  可以用 where 查看在哪儿产生的 core
+
+## 2. 系统api与库函数的关系
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+<img src="image/系统api与函数关系.png">
 
 
 

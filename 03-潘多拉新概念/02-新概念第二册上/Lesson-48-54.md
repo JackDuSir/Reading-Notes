@@ -4,11 +4,11 @@
 
 <img src="lesson/Lesson-48.png">
 
-## Lesson 49 - 
+## Lesson 49 - 复习
 
 <img src="lesson/Lesson-49.png">
 
-## Lesson 50 - 
+## Lesson 50 - Mad Or Not?
 
 <img src="lesson/Lesson-50.png">
 
