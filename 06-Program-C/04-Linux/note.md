@@ -710,6 +710,41 @@ core 文件如何使用：
 
 <img src="image/系统api与函数关系.png">
 
+## 3. Linux 系统编程
+
+ulimit -a 查看所有资源的上限
+
+env 查看环境变量
+
+echo $PATH  打印指定的环境变量
+
+`char *getenv()` 获取环境变量
+
+**创建一个进程**：
+
+`pid_t fork(void)`
+
+返回值：
+
+- 失败 -1
+- 成功，返回两次
+  - 父进程返回子进程的 id
+  - 子进程返回 0
+
+获得pid，进程 id，获得当前进程
+
+`pid_t getpid(void)`
+
+获得当前进程父进程的 id
+
+`pid_t getppid(void)`
+
+
+
+
+
+
+
 
 
 
