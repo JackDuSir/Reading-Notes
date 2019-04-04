@@ -12,7 +12,7 @@
 
 <img src="lesson/Lesson-50.png">
 
-## Lesson 51 - 
+## Lesson 51 - Mad Or Not?
 
 <img src="lesson/Lesson-51.png">
 
