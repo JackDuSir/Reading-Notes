@@ -944,6 +944,140 @@ p = mmap(NULL, size, PROT_READ|PROT_WRITE, MMAP_SHARED, fd, 0);
     - 暂停
     - 继续
 
+### 3.2 进程和线程
+
+- 进程组
+- 会话
+- 守护进程
+
+创建一个会话需要注意以下 5 点注意事项：
+
+- 调用进程不能是进程组组长，该进程编程新会话首进程（session header）
+- 该进程成为一个新进程组的组长进程
+- 新会话丢弃原有的控制终端，该会话没有控制终端
+- 该调用进程是组长进程，则出错返回
+- 建立会话时，先调用fork，父进程终止，子进程调用 setsid
+
+守护进程：
+
+Daemon 进程，是 Linux 中的后台服务进程，通常独立于控制终端并且周期性地执行某种任务或等待处理某些发生的事件。一般采用以 d 结尾的名字。
+
+创建守护进程，最关键的一步是调用 setsid 函数创建一个新的 session 。并成为 session leader。
+
+**创建守护进程模型**：
+
+- 创建子进程，父进程退出
+  - 所有工作在子进程中进行形式上脱离了控制终端
+- 在子进程中创建新会话
+  - setsid() 函数
+  - 使子进程完全能独立出来，脱离控制
+- 改变当前目录为根目录
+  - chdir() 函数
+  - 防止占用可卸载的文件系统
+  - 也可以换成其他路径
+- 重设文件权限掩码
+  - umask() 函数
+  - 防止继承的文件创建屏蔽字拒绝某些权限
+  - 增加守护进程灵活性
+- 关闭文件描述符
+  - 继承的打开文件不会用到，浪费系统资源，无法卸载
+- 开始执行守护进程核心工作
+- 守护进程退出处理程序模型
+
+> 会话：进程组的更高一级，多个进程组对应一个会话
+>
+> 进程组：多个进程在同一个组，第一个进程默认是进程组的组长
+>
+> 创建会话的时候，组长不可以创建，必须是组员创建。
+>
+> 创建会话的步骤：创建子进程，父进程终止，子进程当会长
+>
+> 守护进程的步骤：
+>
+> - 创建子进程 fork
+> - 父进程退出
+> - 子进程当会长 setsid
+> - 切换工作目录 $HOME
+> - 设置掩码 umask
+> - 关闭文件描述符，为了避免浪费资源
+> - 执行核心逻辑
+> - 退出
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include <signal.h>
+
+int main(int argc, char *argv[])
+{
+    char strFileName[256] = {0};
+
+    while (1) {
+        memset(strFileName, 0x00, sizeof(strFileName));
+        sprintf(strFileName, "%s/log/Mr.Miaow.%ld", getenv("HOME"), time(NULL));
+        int fd = open(strFileName, O_RDWR | O_CREAT, 0666);
+        if (fd < 0) {
+            perror("open err");
+            exit(1);
+        }
+        close(fd);
+        sleep(5);                                                                                      
+    }        
+    return 0;
+} 
+```
+
+扩展了解：
+
+通过 nohup 指令也可以达到守护进程创建的效果
+
+nohup cmd [> 1.log] &
+
+- nohup 指令会让 cmd 收不到 SIGHUP 信号
+- & 代表后台运行
+
+线程是最小的执行单位，进程是最小的系统资源分配单位
+
+查看 LWP 号：`ps -Lf pid` 查看指定线程的 lwp 号
+
+线程非共享资源
+
+- 线程 ID
+- 处理器现场和栈指针（内核栈）
+- 独立的栈空间（用户空间栈）
+- errno 变量
+- 信号屏蔽字
+- 调度优先级
+
+线程优缺点：
+
+- 优点：
+  - 提高程序并发性
+  - 开销小
+  - 数据通信、共享数据方便
+- 缺点：
+  - 库函数 不稳定
+  - 调试、编写困难
+  - 对信号支持不好
+
+```shell
+alias echomake=`cat ~/bin/makefile.template >> makefile`
+
+$ cat ~/bin/makefile.template
+# create by Mr.Miaow `date +%Y%m%d`
+SrcFiles=$(wildcard *.c)
+TargetFiles=$(patsubst %.c,%,$(SrcFiles))
+all:$(TargetFiles)
+%:%.c
+	gcc -o $@ %< -lpthread -g
+clean:
+	-rm -f $(TargetFiles)
+```
+
 
 
 
