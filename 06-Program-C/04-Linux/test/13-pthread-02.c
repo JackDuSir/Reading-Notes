@@ -11,19 +11,23 @@
 
 void *thr(void *arg)
 {
+    int num = (int)arg;
     printf("I am a thread! pid = %d, tid = %lu\n", getpid(), pthread_self());
-    return (void *)100;
+    return (void *)(100+num);
 }
 
 int main(int argc, char *argv[])
 {
-    pthread_t tid;
-    pthread_create(&tid, NULL, thr, NULL);
-    void *ret;
-    pthread_join(tid, &ret);
-    printf("ret exit with: %d\n", (int)ret);
-    printf("I am main trhead. pid = %d, tid = %lu\n", getpid(), pthread_self());
-    sleep(1);
+    pthread_t tid[5];
+    int i = 0 ;
+    for (i; i < 5; i++) {
+        pthread_create(&tid[i], NULL, thr, (void *)i);
+    }
+    for (i = 0; i < 5; i++) {
+        void *ret;
+        pthread_join(tid[i], &ret); // 有序的原因
+        printf("i = %d ret = %d\n", i, (int)ret);
+    }
     return 0;
 }
 

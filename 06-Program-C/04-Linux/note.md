@@ -1004,6 +1004,11 @@ Daemon 进程，是 Linux 中的后台服务进程，通常独立于控制终端
 > - 退出
 
 ```c
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                          void *(*start_routine) (void *), void *arg);
+```
+
+```c
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -1078,9 +1083,160 @@ clean:
 	-rm -f $(TargetFiles)
 ```
 
+**线程退出注意事项**：
 
+- 在线程中使用pthread_exit
+- 在线程中使用 return （主控线程return 代表退出进程）
+- exit 代表退出整个进程
 
+线程回收函数：
 
+```c
+int pthread_join(pthread_t thread, void **retval);
+```
+
+杀死线程：
+
+```c
+int pthread_cancel(pthread_t thread);
+```
+
+被pthread_cancel 杀死的线程，退出状态为 PTHREAD_CANCELED
+
+线程分离：
+
+```c
+int pthread_detach(pthread_t thread);
+```
+
+此时不需要 pthread_join回收资源
+
+线程 ID 在进程内部是唯一的
+
+**进程属性控制**：
+
+- 初始化线程属性
+
+  ```c
+  int pthread_attr_init(pthread_attr_t *attr);
+  ```
+
+- 销毁线程属性
+
+  ```c
+  int pthread_attr_destroy(pthread_attr_t *attr);
+  ```
+
+- 设置属性分离态
+
+  ```c
+  int pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate);
+  # attr init 初始化的属性
+  # detachstate
+  # - PTHREAD_CREATE_DETACHED 线程分离
+  # - PTHREAD_CREATE_JOINABLE 允许回收
+  
+  int pthread_attr_getdetachstate(const pthread_attr_t *attr, int *detachstate);
+  ```
+
+查看线程库版本：
+
+```shell
+$ getconf GNU_LIBPTHREAD_VERSION
+```
+
+创建多少个线程？
+
+- cpu核数 * 2 + 2
+
+**线程同步**：
+
+- 协调步骤，顺序执行
+
+解决同步的问题：加锁
+
+**mutex 互斥量**：
+
+```c
+pthread_mutex_t fastmutex = PTHREAD_MUTEX_INITIALIZER;	// 常量初始化，此时可以使用init
+pthread_mutex_t recmutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+pthread_mutex_t errchkmutex = PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP;
+
+int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *mutexattr);
+int pthread_mutex_lock(pthread_mutex_t *mutex);
+int pthread_mutex_trylock(pthread_mutex_t *mutex);
+int pthread_mutex_unlock(pthread_mutex_t *mutex);
+int pthread_mutex_destroy(pthread_mutex_t *mutex);
+```
+
+读写锁的特点：读共享，写独占，写优先级高
+
+读写说任然是一把锁，有不同状态：
+
+- 未加锁
+- 读锁
+- 写锁
+
+```c
+int pthread_rwlock_init(pthread_rwlock_t *restrict rwlock,
+                        const pthread_rwlockattr_t *restrict attr);
+int pthread_rwlock_destroy(pthread_rwlock_t *rwlock);
+pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER;
+
+int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);
+int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
+int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);
+int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
+```
+
+**条件变量**（生产者消费者模型）：
+
+```c
+pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *cond_attr);
+// 唤醒至少一个阻塞在条件变量 cond 上的线程
+int pthread_cond_signal(pthread_cond_t *cond);
+// 唤醒阻塞在条件变量 cond 上的全部线程
+int pthread_cond_broadcast(pthread_cond_t *cond);
+// 条件变量阻塞等待
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+// 超时等待
+int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime);
+int pthread_cond_destroy(pthread_cond_t *cond);
+```
+
+**信号量 加强版的互斥锁**：
+
+信号量是进化版的互斥量，允许多个线程访问共享资源
+
+```c
+#include <semaphore.h>
+int sem_init(sem_t *sem, int pshared, unsigned int value);
+# pshared
+# - 0 代表线程信号量
+# - 非0 代表进程信号量
+# value 定义信号量的个数
+
+// 申请信号量，申请成功 value--
+int sem_wait(sem_t *sem);
+// 释放信号量 value++
+int sem_post(sem_t *sem);
+
+int sem_trywait(sem_t *sem);
+int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout);
+int sem_destroy(sem_t *sem);
+
+// Link with -pthread.
+```
+
+**文件锁**：
+
+```c
+#include <unistd.h>
+#include <fcntl.h>
+
+int fcntl(int fd, int cmd, ... /* arg */ );
+```
 
 
 
