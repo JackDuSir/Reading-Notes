@@ -16,15 +16,15 @@
 
 <img src="lesson/Lesson-51.png">
 
-## Lesson 52 - 
+## Lesson 52 - A Glass Envelope
 
 <img src="lesson/Lesson-52.png">
 
-## Lesson 53 - 
+## Lesson 53 - A Glass Envelope
 
 <img src="lesson/Lesson-53.png">
 
-## Lesson 54 - 
+## Lesson 54 - Ticket
 
 <img src="lesson/Lesson-54.png">
 

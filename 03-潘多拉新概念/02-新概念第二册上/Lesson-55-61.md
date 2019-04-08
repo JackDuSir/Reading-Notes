@@ -1,10 +1,10 @@
 # 新概念第二册上 Lesson 55 - 61
 
-## Lesson 55 - 
+## Lesson 55 - A New House
 
 <img src="lesson/Lesson-55.png">
 
-## Lesson 56 - 
+## Lesson 56 - A New House
 
 <img src="lesson/Lesson-56.png">
 
