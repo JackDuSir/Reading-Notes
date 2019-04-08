@@ -1,0 +1,29 @@
+alias ll='ls -lG'
+alias ls='ls -G'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='mvim -v'
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+alias gcc="gcc-4.9"
+alias g++="g++-4.9"
+alias cc="gcc-4.9"
+alias c++="c++-4.9"
+
+export PATH="/usr/local/share/npm/bin:$PATH"
+export NODE_PATH=/usr/local/share/npm/lib/node_modules
+export PYTHONPATH=/usr/local/lib/python3.3/site-packages
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$PATH:$HOME/anaconda2/bin:$PATH"
+export DYLD_FALLBACK_LIBRARY_PATH="$PATH:$HOME/anaconda2:/usr/local/lib:/usr/lib"
+
+# export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_151.jdk/Contents/Home"
+export PATH=${JAVA_HOME}/bin:$PATH
+
+set -o vi
