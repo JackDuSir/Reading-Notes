@@ -16,7 +16,7 @@
 
 <img src="lesson/Lesson-58.png">
 
-## Lesson 59 - 
+## Lesson 59 - It Could Be Worse
 
 <img src="lesson/Lesson-59.png">
 
