@@ -20,10 +20,10 @@
 
 <img src="lesson/Lesson-59.png">
 
-## Lesson 60 - 
+## Lesson 60 - Do the English Speak English?
 
 <img src="lesson/Lesson-60.png">
 
-## Lesson 61 - 
+## Lesson 61 - Do the English Speak English?
 
 <img src="lesson/Lesson-61.png">
