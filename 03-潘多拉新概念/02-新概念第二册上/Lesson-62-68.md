@@ -20,10 +20,10 @@
 
 <img src="lesson/Lesson-66.png">
 
-## Lesson 67 - 
+## Lesson 67 - No Parking
 
 <img src="lesson/Lesson-67.png">
 
-## Lesson 68 - 
+## Lesson 68 - No Parking
 
 <img src="lesson/Lesson-68.png">
