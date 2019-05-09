@@ -1,30 +1,30 @@
 # 新概念第二册上 Lesson 76 - 82
 
-## Lesson 76 - 
+## Lesson 76 - Success Story
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-76.png">
 
-## Lesson 77 - 
+## Lesson 77 - Success Story
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-77.png">
 
-## Lesson 78 - 
+## Lesson 78 - Shopping Made Easy
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-78.png">
 
-## Lesson 79 - 
+## Lesson 79 - Shopping Made Easy
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-79.png">
 
-## Lesson 80 - 
+## Lesson 80 - Out Of The Darkness
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-80.png">
 
-## Lesson 81 - 
+## Lesson 81 - Out Of The Darkness
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-81.png">
 
-## Lesson 82 - 
+## Lesson 82 - 复习
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-82.png">
 

@@ -1,29 +1,29 @@
-# 新概念第二册上 Lesson 69 - 75
+# 新概念第二册上 Lesson 83 - 89
 
-## Lesson 69 - 
+## Lesson 83 - Quick Work
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-83.png">
 
-## Lesson 70 - 
+## Lesson 84 - Quick Work
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-84.png">
 
-## Lesson 71 - 
+## Lesson 85 - Stop thief!
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-85.png">
 
-## Lesson 72 - 
+## Lesson 86 - Stop thief!
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-86.png">
 
-## Lesson 73 - 
+## Lesson 87 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-87.png">
 
-## Lesson 74 - 
+## Lesson 88 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-88.png">
 
-## Lesson 75 - 
+## Lesson 89 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-89.png">
