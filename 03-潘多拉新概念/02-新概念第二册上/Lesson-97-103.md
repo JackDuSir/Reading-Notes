@@ -1,29 +1,30 @@
-# 新概念第二册上 Lesson 69 - 75
+# 新概念第二册上 Lesson 97 - 103
 
-## Lesson 69 - 
+## Lesson 97 -  Am I All Right?
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-97.png">
 
-## Lesson 70 - 
+## Lesson 98 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-98.png">
 
-## Lesson 71 - 
+## Lesson 99 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-99.png">
 
-## Lesson 72 - 
+## Lesson 100 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-100.png">
 
-## Lesson 73 - 
+## Lesson 101 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-101.png">
 
-## Lesson 74 - 
+## Lesson 102 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-102.png">
 
-## Lesson 75 - 
+## Lesson 103 - 
 
-<img src="lesson/Lesson-.png">
+<img src="lesson/Lesson-103.png">
+
