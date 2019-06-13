@@ -4,27 +4,27 @@
 
 <img src="lesson/Lesson-97.png">
 
-## Lesson 98 - 
+## Lesson 98 - Food And Talk
 
 <img src="lesson/Lesson-98.png">
 
-## Lesson 99 - 
+## Lesson 99 - Food And Talk
 
 <img src="lesson/Lesson-99.png">
 
-## Lesson 100 - 
+## Lesson 100 - 复习
 
 <img src="lesson/Lesson-100.png">
 
-## Lesson 101 - 
+## Lesson 101 - Do you call that a hat?
 
 <img src="lesson/Lesson-101.png">
 
-## Lesson 102 - 
+## Lesson 102 - Do you call that a hat?
 
 <img src="lesson/Lesson-102.png">
 
-## Lesson 103 - 
+## Lesson 103 - Not Very Musical
 
 <img src="lesson/Lesson-103.png">
 
