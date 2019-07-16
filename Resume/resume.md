@@ -1,4 +1,46 @@
+FFmpeg：
+
+- FFmpeg（3.4.6） + SDL2（2.0.9）实现播放器，使用FFmpeg Filter为视频增加logo。
+  - 音视频同步
+  - 视频增加logo
+
+- FFmpeg 实时美颜直播推流
+
+
+
+WebRTC：
+
+
+
+
+
+RTMP推流流程：
+
+
+
+FFmpeg： 
+
+- FFmpeg裁剪与优化
+- FFmpeg Filter 的使用
+- 音视频同步
+- 
+
+
+
+
+
+
+
+
+
+“STAR”是SITUATION（背景）、TASK（任务）、ACTION（行动）和RESULT（结果）
+
+
+
+
+
 1. kaggle猫狗大战项目：使用Keras将Xception， InceptionV3和ResNet50 这三个模型进行迁移学习，在验证集上的准确率可以达到99.4%， 在kaggle提交的结果为0.04150，识别准确率进入 Kaggle Top 2%。项目同时基于训练好的模型使用 Flask 搭建部署了一个简单易用的猫狗识别网页应用。 webapp用daocker打包成了镜像文件，可以快速部署并复现实验结果。
+
 2. 电影推荐系统：使用开源MovieLens数据集，基于TensorFlow使用文本卷积网络生成movie特征矩阵和user特征矩阵，在推荐同类型电影根据当前看的电影特征向量与整个电影特征矩阵的余弦相似度，取相似度最大的Top N个。训练完成后的模型预测 MSE loss 为0.8。 
 
 3. 波士顿房价预测：使用Pandas 和Numpy 先从宏观了解数据的特征。使用sklearn对数据进行分割与重排，模型实现使用的是sklearn的[GridSearchCV](http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html)算法，回归器选择DecisionTreeRegressor。项目使用R^2（决定系数）作为回归模型的衡量标准。模型fit数据，得到最优模型。最后应用模型进行预测。最后评估模型是否对现实有指导意义。
@@ -19,7 +61,7 @@
 
    - 智能体在从环境中感知其所处的状态 $s_t$
    - 智能体根据某些准则选择动作 $a_t$
-   - 环境根据智能体选择的动作，向智能体反馈奖励 $r_{t+1}​$
+   - 环境根据智能体选择的动作，向智能体反馈奖励 $r_{t+1}$
 
    通过合理的学习算法，智能体将在这样的问题设置下，成功学到一个在状态 $s_t$ 选择动作 $a_t$ 的策略 $\pi (s_t) = a_t$。
 
