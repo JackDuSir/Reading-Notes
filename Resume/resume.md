@@ -5,6 +5,10 @@ FFmpeg：
   - 视频增加logo
 
 - FFmpeg 实时美颜直播推流
+  - 海康摄像头获取rtsp流（1920x1080，现在视频推流一般都是 1280 X 720），opencv采集rtsp解码，ffmpeg缩放转像素格式，ffmpeg编码h264，ffmpeg推流rtmp。
+  - 音视频同步？
+  - 使用opencv磨皮（双边滤波）- 工厂类
+  - 
 
 
 
